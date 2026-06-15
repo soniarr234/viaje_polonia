@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Viaje a Polonia 🇵🇱</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- CABECERA: Información crítica (Vuelo / Cuenta atrás) -->
+    <header class="app-header">
+        <h1>Polonia Itinerary</h1>
+        <div id="countdown" class="badge"></div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL: Vistas de la SPA -->
+    <main class="app-content">
+        
+        <!-- Pestaña 1: Cronograma (Activa por defecto) -->
+        <section id="tab-itinerary" class="view active">
+            <h2>Ruta Día a Día</h2>
+            <div class="timeline" id="timeline-container">
+                <!-- Inyectado dinámicamente con JS -->
+            </div>
+        </section>
+
+        <!-- Pestaña 2: Mapas y Geolocalización -->
+        <section id="tab-map" class="view">
+            <div class="map-wrapper">
+                <!-- Reemplaza el src con el enlace "embed" de tu mapa de My Maps -->
+                <iframe 
+                    src="https://google.com/maps/d/u/0/edit?mid=133_DZMUQInXpMVs6ErvqQsp6S4PPC_s&usp=sharing" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </section>
+
+        <!-- Pestaña 3: Finanzas y Conversor -->
+        <section id="tab-finance" class="view">
+            <h2>Gastos y Divisa</h2>
+            <div class="converter-box">
+                <input type="number" id="eur-input" placeholder="EUR (€)">
+                <span class="equals">=</span>
+                <span id="pln-output">0.00 PLN</span>
+            </div>
+            <div id="budget-summary"></div>
+        </section>
+
+        <!-- Pestaña 4: Documentos y Checklist -->
+        <section id="tab-docs" class="view">
+            <h2>Checklist y Reservas</h2>
+            <ul class="checklist" id="pack-list">
+                <!-- Checkboxes guardados en LocalStorage -->
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR (Estilo App Móvil) -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-target="tab-itinerary">📅 <span>Ruta</span></button>
+        <button class="nav-btn" data-target="tab-map">📍 <span>Mapa</span></button>
+        <button class="nav-btn" data-target="tab-finance">🪙 <span>Dinero</span></button>
+        <button class="nav-btn" data-target="tab-docs">📋 <span>Docs</span></button>
+    </nav>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

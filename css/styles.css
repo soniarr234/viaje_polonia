@@ -1,0 +1,73 @@
+/* Variables globales para simplificar colores */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #212529;
+    --primary-color: #dc3545; /* Rojo bandera de Polonia */
+    --nav-bg: #f8f9fa;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #121212;
+        --text-color: #f8f9fa;
+        --nav-bg: #1e1e1e;
+    }
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Sistema de enrutado básico SPA */
+.view {
+    display: none;
+    padding: 1rem;
+    padding-bottom: 5rem; /* Evita que la barra tape contenido */
+}
+
+.view.active {
+    display: block;
+}
+
+/* Barra inferior fija */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--nav-bg);
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.nav-btn * {
+    pointer-events: none;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.nav-btn.active {
+    color: var(--primary-color);
+    opacity: 1;
+    font-weight: bold;
+}
