@@ -19,8 +19,110 @@
         
         <!-- Pestaña 1: Cronograma (Activa por defecto) -->
         <section id="tab-itinerary" class="view active">
-            <h2>Ruta Día a Día</h2>
-            <div class="timeline" id="timeline-container"></div>
+            
+            <!-- SUB-NAV SUPERIOR (Filtros internos de la ruta) -->
+            <div class="sub-nav-container">
+                <button class="sub-nav-btn active" data-sub="sub-vuelos">✈️ Vuelos</button>
+                <button class="sub-nav-btn" data-sub="sub-hoteles">🏨 Hoteles</button>
+                <button class="sub-nav-btn" data-sub="sub-ciudades">🏙️ Ciudades</button>
+            </div>
+
+            <!-- SUB-VISTA A: VUELOS (Supertarjeta contenedora con título) -->
+            <div id="sub-vuelos" class="sub-view active">
+                
+                <!-- SUPERTARJETA CONTENEDORA GLOBAL -->
+                <div class="super-container-card">
+                    <!-- Título principal de la sección -->
+                    <h2 class="super-card-title">✈️ Itinerario de Vuelos</h2>
+                    
+                    <!-- Contenedor interno de los vuelos independientes -->
+                    <div class="flights-inner-group">
+                        
+                        <!-- TARJETA 1: VUELO DE IDA -->
+                        <div class="flight-summary-card" id="card-going">
+                            <div class="flight-card-badge">🛫 VUELO DE IDA</div>
+                            <h3>Datos de tus vuelos</h3>
+                            <div class="flight-brief-grid">
+                                <div class="brief-item"><span>Compañía</span><strong id="brief-going-airline">Ryanair</strong></div>
+                                <div class="brief-item"><span>Terminal</span><strong id="brief-going-terminal">T1</strong></div>
+                                <div class="brief-item"><span>Hora</span><strong id="brief-going-time">06:35h</strong></div>
+                            </div>
+                            <div class="flight-card-footer">👁️ Pulsa para ver detalles o editar</div>
+                        </div>
+
+                        <!-- TARJETA 2: VUELO DE VUELTA -->
+                        <div class="flight-summary-card" id="card-return">
+                            <div class="flight-card-badge return">🛬 VUELO DE VUELTA</div>
+                            <h3>Datos de tus vuelos</h3>
+                            <div class="flight-brief-grid">
+                                <div class="brief-item"><span>Compañía</span><strong id="brief-return-airline">Wizz Air</strong></div>
+                                <div class="brief-item"><span>Terminal</span><strong id="brief-return-terminal">T2</strong></div>
+                                <div class="brief-item"><span>Hora</span><strong id="brief-return-time">21:40h</strong></div>
+                            </div>
+                            <div class="flight-card-footer">👁️ Pulsa para ver detalles o editar</div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- POPUP 1: MODAL VUELO DE IDA (Mantenlo igual abajo) -->
+                <div id="modal-flight-going" class="flight-modal">
+                    <div class="flight-modal-content">
+                        <span class="close-modal-btn" data-modal="modal-flight-going">✕</span>
+                        <h3>⚙️ Detalles e Inserción (Ida)</h3>
+                        <div class="modal-flight-image-placeholder going">✈️</div>
+                        <div class="expense-form" style="box-shadow:none; padding:0; margin:0;">
+                            <div class="form-row"><input type="text" id="edit-going-airline"><input type="text" id="edit-going-terminal"></div>
+                            <div class="form-row"><input type="text" id="edit-going-time"></div>
+                            <button id="save-going-btn" class="submit-expense-btn">💾 Guardar Vuelo Ida</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POPUP 2: MODAL VUELO DE VUELTA (Mantenlo igual abajo) -->
+                <div id="modal-flight-return" class="flight-modal">
+                    <div class="flight-modal-content">
+                        <span class="close-modal-btn" data-modal="modal-flight-return">✕</span>
+                        <h3>⚙️ Detalles e Inserción (Vuelta)</h3>
+                        <div class="modal-flight-image-placeholder return">✈️</div>
+                        <div class="expense-form" style="box-shadow:none; padding:0; margin:0;">
+                            <div class="form-row"><input type="text" id="edit-return-airline"><input type="text" id="edit-return-terminal"></div>
+                            <div class="form-row"><input type="text" id="edit-return-time"></div>
+                            <button id="save-return-btn" class="submit-expense-btn">💾 Guardar Vuelo Vuelta</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- SUB-VISTA B: HOTELES (Editable y persistente) -->
+            <div id="sub-hoteles" class="sub-view">
+                <div class="expense-form">
+                    <h3>🏨 Alojamientos en Polonia</h3>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>🏰 Hotel Cracovia (Nombre y Dirección)</label>
+                            <input type="text" id="hotel-krakow" placeholder="Ej: Atlantis Hostel, Westerplatte 16">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>🌲 Hotel Breslavia (Nombre y Dirección)</label>
+                            <input type="text" id="hotel-wroclaw" placeholder="Ej: Korona Hotel, Rynek 29">
+                        </div>
+                    </div>
+                    <button id="save-hotels-btn" class="submit-expense-btn">💾 Guardar Cambios Hoteles</button>
+                </div>
+            </div>
+
+            <!-- SUB-VISTA C: CIUDADES (Línea de tiempo dinámica) -->
+            <div id="sub-ciudades" class="sub-view">
+                <div class="timeline" id="timeline-container">
+                    <!-- JS inyectará el itinerario de Cracovia y Breslavia aquí -->
+                </div>
+            </div>
+
         </section>
 
         <!-- Pestaña 2: Mapas y Geolocalización -->
@@ -161,13 +263,40 @@
                     <span class="legend-item"><span class="dot transporte"></span>🚇 Transp</span>
                 </div>
             </div>
-            
+
             <!-- Caja de Proyección Financiera e Inteligencia de Viaje -->
             <div id="expense-projection-box" class="projection-card">
                 <!-- JS inyectará el análisis de promedio y ritmo aquí -->
             </div>
             <div id="expenses-timeline-container"></div>
         </section>
+
+        <!-- Pestaña 4: Documentos y Checklist -->
+        <section id="tab-docs" class="view">
+            <h2>Maleta</h2>
+            
+            <!-- Formulario rápido con selector de categorías -->
+            <div class="expense-form" style="margin-bottom: 1.5rem;">
+                <h3>➕ Añadir Objeto a la Maleta</h3>
+                <div class="form-row">
+                    <input type="text" id="new-pack-item" placeholder="Ej: Llevar paraguas pequeño...">
+                </div>
+                <div class="form-row">
+                    <select id="new-pack-cat">
+                        <option value="🪪 Imprescindibles">🪪 Imprescindibles</option>
+                        <option value="❄️ Ropa de Frío">❄️ Ropa de Frío</option>
+                        <option value="🔌 Tecnología">🔌 Tecnología</option>
+                        <option value="💊 Aseo y Botiquín">💊 Aseo y Botiquín</option>
+                        <option value="📦 Otros">📦 Otros</option>
+                    </select>
+                    <button id="add-pack-item-btn" class="submit-expense-btn" style="flex: 1; margin-top: 0; padding: 0.6rem;">Añadir</button>
+                </div>
+            </div>
+
+            <!-- Contenedor dinámico donde JS pintará la maleta clasificada -->
+            <div id="checklist-dynamic-container"></div>
+        </section>
+
     </main>
 
     <!-- NAVEGACIÓN INFERIOR (Estilo App Móvil) -->
@@ -176,7 +305,7 @@
         <!-- Icono 1: Calendario / Ruta -->
         <button class="nav-btn active" data-target="tab-itinerary">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h1a1 1 0 0 1 1 1v1h5V3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3V3a1 1 0 0 1 1-1m8 2h1V3h-1zM8 4V3H7v1zM6 5a2 2 0 0 0-2 2v1h15V7a2 2 0 0 0-2-2zM4 18a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V9H4zm8-5h5v5h-5zm1 1v3h3v-3z"/></svg>
-            <span>Ruta</span>
+            <span>Info</span>
         </button>
 
         <!-- Icono 2: Mapa / Ubicaciones -->

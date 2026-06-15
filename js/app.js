@@ -41,11 +41,13 @@ renderItinerario();
 initConversor();
 initChecklist();
 initCountdown();
+initRouteSubNavigation();
+initEditableLogistics();
 
 // =========================================================================
 // 3. FUNCIONES DE LOS COMPONENTES
 // =========================================================================
-
+/* SISTEMA ENRUTADOR PRINCIPAL (Pestañas del Menú Inferior) */
 function initNavigation() {
     const buttons = document.querySelectorAll('.nav-btn');
     const views = document.querySelectorAll('.view');
@@ -69,6 +71,145 @@ function initNavigation() {
             window.scrollTo(0, 0);
         });
     });
+}
+
+/* SUB-ENRUTADOR SUPERIOR DE LA RUTA (Vuelos | Hoteles | Ciudades) */
+function initRouteSubNavigation() {
+    const subButtons = document.querySelectorAll('.sub-nav-btn');
+    const subViews = document.querySelectorAll('.sub-view');
+
+    subButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const targetSub = e.currentTarget.getAttribute('data-sub');
+
+            subButtons.forEach(b => b.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+
+            subViews.forEach(view => {
+                if (view.id === targetSub) {
+                    view.classList.add('active');
+                } else {
+                    view.classList.remove('active');
+                }
+            });
+        });
+    });
+}
+
+/* COMPONENTE LOGÍSTICA EDITABLE (Persistencia en memoria de Transportes y Alojamientos) */
+/* COMPONENTE LOGÍSTICA EDITABLE CON POPUPS MODALES (Ida y Vuelta) */
+function initEditableLogistics() {
+    // Selectores de las tarjetas clickables
+    const cardGoing = document.getElementById('card-going');
+    const cardReturn = document.getElementById('card-return');
+    
+    // Selectores de los popups (modales)
+    const modalGoing = document.getElementById('modal-flight-going');
+    const modalReturn = document.getElementById('modal-flight-return');
+    const closeBtns = document.querySelectorAll('.close-modal-btn');
+
+    // Selectores de campos editables del popup (Ida)
+    const editGoingAirline = document.getElementById('edit-going-airline');
+    const editGoingTerminal = document.getElementById('edit-going-terminal');
+    const editGoingTime = document.getElementById('edit-going-time');
+    const saveGoingBtn = document.getElementById('save-going-btn');
+
+    // Selectores de campos editables del popup (Vuelta)
+    const editReturnAirline = document.getElementById('edit-return-airline');
+    const editReturnTerminal = document.getElementById('edit-return-terminal');
+    const editReturnTime = document.getElementById('edit-return-time');
+    const saveReturnBtn = document.getElementById('save-return-btn');
+
+    // Selectores de los textos resumen en la pantalla principal
+    const briefGoingAirline = document.getElementById('brief-going-airline');
+    const briefGoingTerminal = document.getElementById('brief-going-terminal');
+    const briefGoingTime = document.getElementById('brief-going-time');
+    
+    const briefReturnAirline = document.getElementById('brief-return-airline');
+    const briefReturnTerminal = document.getElementById('brief-return-terminal');
+    const briefReturnTime = document.getElementById('brief-return-time');
+
+    // 1. Función para cargar datos guardados de LocalStorage y pintar los resúmenes en la tarjeta
+    function actualizarResumenVuelos() {
+        // Valores por defecto de fábrica si el LocalStorage está vacío
+        const dataGoing = {
+            airline: localStorage.getItem('v_going_airline') || "Ryanair",
+            terminal: localStorage.getItem('v_going_terminal') || "T1",
+            time: localStorage.getItem('v_going_time') || "06:15h"
+        };
+        const dataReturn = {
+            airline: localStorage.getItem('v_return_airline') || "Wizz Air",
+            terminal: localStorage.getItem('v_return_terminal') || "T2",
+            time: localStorage.getItem('v_return_time') || "21:40h"
+        };
+
+        // Pintar en los textos estáticos del cuadrado principal
+        if (briefGoingAirline) briefGoingAirline.textContent = dataGoing.airline;
+        if (briefGoingTerminal) briefGoingTerminal.textContent = dataGoing.terminal;
+        if (briefGoingTime) briefGoingTime.textContent = dataGoing.time;
+
+        if (briefReturnAirline) briefReturnAirline.textContent = dataReturn.airline;
+        if (briefReturnTerminal) briefReturnTerminal.textContent = dataReturn.terminal;
+        if (briefReturnTime) briefReturnTime.textContent = dataReturn.time;
+
+        // Rellenar las cajas de texto internas de los popups para que no salgan vacías al editar
+        if (editGoingAirline) editGoingAirline.value = dataGoing.airline;
+        if (editGoingTerminal) editGoingTerminal.value = dataGoing.terminal;
+        if (editGoingTime) editGoingTime.value = dataGoing.time;
+
+        if (editReturnAirline) editReturnAirline.value = dataReturn.airline;
+        if (editReturnTerminal) editReturnTerminal.value = dataReturn.terminal;
+        if (editReturnTime) editReturnTime.value = dataReturn.time;
+    }
+
+    // 2. Eventos para abrir las ventanas emergentes (Popups) al pulsar en el cuadrado
+    if (cardGoing && modalGoing) {
+        cardGoing.addEventListener('click', () => {
+            modalGoing.classList.add('open');
+        });
+    }
+    if (cardReturn && modalReturn) {
+        cardReturn.addEventListener('click', () => {
+            modalReturn.classList.add('open');
+        });
+    }
+
+    // 3. Evento unificado para cerrar cualquier popup al pulsar en la cruz '✕'
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita conflictos de clics encadenados
+            const modalId = btn.getAttribute('data-modal');
+            const targetModal = document.getElementById(modalId);
+            if (targetModal) targetModal.classList.remove('open');
+        });
+    });
+
+    // 4. Lógica de guardado del Formulario del Popup de Ida
+    if (saveGoingBtn) {
+        saveGoingBtn.addEventListener('click', () => {
+            localStorage.setItem('v_going_airline', editGoingAirline.value.trim());
+            localStorage.setItem('v_going_terminal', editGoingTerminal.value.trim());
+            localStorage.setItem('v_going_time', editGoingTime.value.trim());
+            
+            modalGoing.classList.remove('open'); // Cerrar popup
+            actualizarResumenVuelos(); // Actualizar el cuadrado principal
+        });
+    }
+
+    // 5. Lógica de guardado del Formulario del Popup de Vuelta
+    if (saveReturnBtn) {
+        saveReturnBtn.addEventListener('click', () => {
+            localStorage.setItem('v_return_airline', editReturnAirline.value.trim());
+            localStorage.setItem('v_return_terminal', editReturnTerminal.value.trim());
+            localStorage.setItem('v_return_time', editReturnTime.value.trim());
+            
+            modalReturn.classList.remove('open'); // Cerrar popup
+            actualizarResumenVuelos(); // Actualizar el cuadrado principal
+        });
+    }
+
+    // Inicializar los datos del tarjetero al arrancar
+    actualizarResumenVuelos();
 }
 
 function renderItinerario() {
@@ -370,24 +511,114 @@ function initConversor() {
 }
 
 function initChecklist() {
-    const packList = document.getElementById('pack-list');
-    if (!packList) return;
+    const container = document.getElementById('checklist-dynamic-container');
+    const inputNewItem = document.getElementById('new-pack-item');
+    const btnAddNewItem = document.getElementById('add-pack-item-btn');
 
-    packList.innerHTML = datosViaje.checklist.map(item => {
-        const checked = localStorage.getItem(item.id) === 'true' ? 'checked' : '';
-        return `
-            <li style="list-style: none; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
-                <input type="checkbox" id="${item.id}" ${checked} style="transform: scale(1.2);">
-                <label for="${item.id}" style="user-select: none;">${item.texto}</label>
-            </li>
-        `;
-    }).join('');
+    // 1. Elementos por defecto que vienen de fábrica si la app se abre por primera vez
+    const itemsPredeterminados = [
+        { id: "pack_1", texto: "DNI / Pasaporte original", cat: "🪪 Imprescindibles" },
+        { id: "pack_2", texto: "Tarjeta Revolut / Billetes de avión", cat: "🪪 Imprescindibles" },
+        { id: "pack_3", texto: "Ropa térmica (camisetas y mallas)", cat: "❄️ Ropa de Frío" },
+        { id: "pack_4", texto: "Guantes impermeables, gorro y bufanda", cat: "❄️ Ropa de Frío" },
+        { id: "pack_5", texto: "Cargadores y Batería externa (Powerbank)", cat: "🔌 Tecnología" },
+        { id: "pack_6", texto: "Protector labial (el frío corta los labios)", cat: "💊 Aseo y Botiquín" }
+    ];
 
-    packList.addEventListener('change', (e) => {
-        if (e.target.type === 'checkbox') {
-            localStorage.setItem(e.target.id, e.target.checked);
-        }
-    });
+    // 2. Cargar la base de datos local o crearla usando los datos de fábrica
+    let listaMaleta = JSON.parse(localStorage.getItem('maletaViajePolonia')) || itemsPredeterminados;
+
+    // 3. Función principal para dibujar la maleta agrupada por bloques de categorías
+    function renderMaleta() {
+        if (!container) return;
+
+        // Agrupamos el array plano en un objeto clasificado por categorías
+        const agrupado = {};
+        listaMaleta.forEach(item => {
+            if (!agrupado[item.cat]) agrupado[item.cat] = [];
+            agrupado[item.cat].push(item);
+        });
+
+        // Generamos el HTML dinámico de las cajas
+        container.innerHTML = Object.keys(agrupado).map(categoria => {
+            const itemsDeLaCategoria = agrupado[categoria];
+
+            const checkboxesHTML = itemsDeLaCategoria.map(item => {
+                // Comprobamos en LocalStorage si este ID específico ya estaba marcado como completado
+                const estaMarcado = localStorage.getItem(`status_${item.id}`) === 'true';
+                
+                return `
+                    <label class="check-item-label ${estaMarcado ? 'completed' : ''}" for="${item.id}">
+                        <div class="check-item-left">
+                            <input type="checkbox" id="${item.id}" ${estaMarcado ? 'checked' : ''}>
+                            <span>${item.texto}</span>
+                        </div>
+                        <button class="delete-pack-btn" data-id="${item.id}">✕</button>
+                    </label>
+                `;
+            }).join('');
+
+            return `
+                <div class="pack-category-block">
+                    <h3 class="pack-category-title">${categoria}</h3>
+                    <div class="pack-items-list">${checkboxesHTML}</div>
+                </div>
+            `;
+        }).join('');
+
+        // Enganchar el evento 'change' a los checkboxes para el guardado automático
+        container.querySelectorAll('input[type="checkbox"]').forEach(chk => {
+            chk.addEventListener('change', (e) => {
+                const idSeleccionado = e.target.id;
+                const valorMarcado = e.target.checked;
+                
+                // Guardamos el estado individual en LocalStorage
+                localStorage.setItem(`status_${idSeleccionado}`, valorMarcado);
+                
+                // Añadimos o quitamos la clase visual de tachado gris al label padre
+                const labelPadre = e.target.closest('.check-item-label');
+                if (labelPadre) {
+                    labelPadre.classList.toggle('completed', valorMarcado);
+                }
+            });
+        });
+
+        // Enganchar el evento 'click' a los botones de eliminar un objeto de la lista
+        container.querySelectorAll('.delete-pack-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idABorrar = e.currentTarget.getAttribute('data-id');
+                // Limpiamos su registro de LocalStorage y lo sacamos del array principal
+                localStorage.removeItem(`status_${idABorrar}`);
+                listaMaleta = listaMaleta.filter(item => item.id !== idABorrar);
+                localStorage.setItem('maletaViajePolonia', JSON.stringify(listaMaleta));
+                renderMaleta(); // Volver a pintar
+            });
+        });
+    }
+
+    // 4. Lógica del botón para insertar cosas nuevas a la maleta
+    if (btnAddNewItem && inputNewItem) {
+        btnAddNewItem.addEventListener('click', () => {
+            const textoNuevo = inputNewItem.value.trim();
+            const selectCat = document.getElementById('new-pack-cat'); // Capturamos el select
+            
+            if (!textoNuevo) return;
+
+            const nuevoObjeto = {
+                id: 'pack_' + Date.now(),
+                texto: textoNuevo,
+                cat: selectCat ? selectCat.value : "📦 Otros" // Asigna la categoría seleccionada
+            };
+
+            listaMaleta.push(nuevoObjeto);
+            localStorage.setItem('maletaViajePolonia', JSON.stringify(listaMaleta));
+            inputNewItem.value = ""; // Limpiar caja de escritura
+            renderMaleta(); // Refrescar interfaz
+        });
+    }
+
+    // Dibujar la maleta por primera vez al entrar a la web
+    renderMaleta();
 }
 
 function initCountdown() {

@@ -7,15 +7,17 @@
     --card-bg: #f1f5f9;        /* Gris claro para destacar tarjetas */
 }
 
+/*Para que se vea oscuro si tienes puesto oscuro en tu movil el tema*/
+/*
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-color: #0f172a;   /* Azul noche profunda */
+        --bg-color: #0f172a;
         --text-color: #f8fafc;
-        --nav-bg: #1e293b;     /* Azul grisáceo oscuro */
-        --card-bg: #334155;    /* Gris azulado para las tarjetas */
+        --nav-bg: #1e293b;
+        --card-bg: #334155;
     }
 }
-
+*/
 body {
     margin: 0;
     font-family: system-ui, -apple-system, sans-serif;
@@ -143,18 +145,7 @@ body {
     gap: 12px;
     position: relative;
     box-sizing: border-box; /* Evita que el padding estire la tarjeta */
-}
-
-/* Inserta la bandera polaca de fondo con opacidad baja en la tarjeta */
-.budget-card::before {
-    content: "🇵🇱";
-    position: absolute;
-    right: 10px;
-    bottom: 5px;
-    font-size: 4rem;
-    opacity: 0.15;
-    pointer-events: none;
-}
+}  
 
 /* Cabecera interna de la tarjeta (Título y Etiqueta en vivo alineados) */
 .budget-card-header {
@@ -544,4 +535,336 @@ body {
 .submit-expense-btn:active {
     transform: scale(0.99);
     opacity: 0.9;
+}
+
+/*******************************************************************************
+ PESTAÑA DE EQUIPAJE (Checklist Interactiva y Categorías)
+ *******************************************************************************/
+
+/* Caja superior del buscador/formulario de inserción */
+.add-item-box input {
+    flex: 1;
+    padding: 0.7rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.add-item-box button {
+    background-color: #0284c7; /* Azul ártico */
+    color: white;
+    border: none;
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Bloques contenedores por cada categoría */
+.pack-category-block {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Título de la categoría (ej: Imprescindibles) */
+.pack-category-title {
+    margin: 0 0 0.8rem 0;
+    font-size: 0.95rem;
+    font-weight: bold;
+    opacity: 0.85;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 4px;
+}
+
+/* Listado vertical de elementos */
+.pack-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Filas clickables individuales estilo botón de lista */
+.check-item-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    background: var(--bg-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    border-left: 3px solid var(--primary-color);
+}
+
+.check-item-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.check-item-left input[type="checkbox"] {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Botón de la cruz para eliminar una tarea */
+.delete-pack-btn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 4px;
+}
+
+/* CLASE DINÁMICA DE JS: Efecto visual cuando la tarea está tachada y completada */
+.check-item-label.completed {
+    opacity: 0.4; /* Se vuelve semitransparente */
+    background-color: rgba(0,0,0,0.01);
+}
+.check-item-label.completed .check-item-left span {
+    text-decoration: line-through; /* Tacha el texto */
+}
+
+
+/*******************************************************************************
+ 6. SUB-NAVEGACIÓN DE LA RUTA (Menú superior interno de la pestaña 1)
+*******************************************************************************/
+
+.sub-nav-container {
+    display: flex;
+    background: var(--card-bg);
+    padding: 6px;
+    border-radius: 12px;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Corregidos los botones superiores para eliminar los bordes feos por defecto de Windows */
+.sub-nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none; /* Elimina la línea de foco */
+    padding: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 8px;
+    opacity: 0.6;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.sub-nav-btn.active {
+    background-color: #0284c7 !important; 
+    color: #ffffff !important;
+    opacity: 1;
+}
+
+.sub-view {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sub-view.active {
+    display: block;
+}
+
+/*******************************************************************************
+ 6.1 COMPONENTE SUPERTARJETA DE VUELOS (Reestructurado)
+*******************************************************************************/
+
+/* La supertarjeta contenedora principal blanca/clara */
+.super-container-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+/* Encabezado h2 interno de la supertarjeta */
+.super-card-title {
+    margin: 0 0 1.2rem 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+/* Bloque vertical que apila los dos vuelos por dentro */
+.flights-inner-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Tarjetas individuales internas (Convertidas en celdas limpias sin doble fondo) */
+.flight-summary-card {
+    background: var(--bg-color); /* Usa el fondo general grisáceo suave para contrastar */
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 100%;
+    transition: transform 0.1s ease;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+.flight-summary-card:active {
+    transform: scale(0.98);
+}
+
+.flight-card-badge {
+    display: inline-block;
+    background: rgba(2, 132, 199, 0.1);
+    color: #0284c7;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+.flight-card-badge.return {
+    background: rgba(217, 119, 6, 0.1);
+    color: #d97706;
+}
+
+.flight-summary-card h3 {
+    margin: 0 0 0.6rem 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    opacity: 0.7; /* Suavizado para que resalte la información numérica de abajo */
+    color: var(--text-color);
+}
+
+.flight-brief-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 8px;
+    margin-bottom: 6px;
+}
+
+.brief-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.brief-item span {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.brief-item strong {
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+.flight-card-footer {
+    font-size: 0.7rem;
+    opacity: 0.5;
+    text-align: right;
+    font-weight: 500;
+}
+
+/* =========================================================================
+   ESTILOS PARA LAS VENTANAS EMERGENTES (POPUP MODALS)
+   ========================================================================= */
+
+/* Fondo oscuro transparente que cubre toda la aplicación web */
+.flight-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Capa translúcida */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000; /* Salta por delante de la botonera inferior */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+/* Clase inyectada por JS para encender el Popup */
+.flight-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Caja interior blanca flotante del popup */
+.flight-modal-content {
+    background: var(--bg-color);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Botón de la cruz superior derecha de cierre */
+.close-modal-btn {
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #ef4444;
+    font-weight: bold;
+    padding: 4px;
+}
+
+/* Contenedor estético con degradado que aloja la foto o icono del avión */
+.modal-flight-image-placeholder {
+    width: 100%;
+    height: 120px;
+    border-radius: 12px;
+    margin: 0.8rem 0 1.2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.modal-flight-image-placeholder.going {
+    background: linear-gradient(135deg, #0284c7 0%, #0c4a6e 100%);
+}
+
+.modal-flight-image-placeholder.return {
+    background: linear-gradient(135deg, #d97706 0%, #78350f 100%);
 }
