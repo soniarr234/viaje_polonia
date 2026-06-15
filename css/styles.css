@@ -97,15 +97,17 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
-    opacity: 0.6;
+    font-size: 0.75rem;
+    gap: 4px;             /* Añade este pequeño espacio entre el icono SVG y el texto */
+    opacity: 0.5;         /* Los botones apagados se verán semitransparentes muy finos */
     cursor: pointer;
+    transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 .nav-btn.active {
-    color: var(--primary-color);
-    opacity: 1;
-    font-weight: bold;
+    color: var(--primary-color); /* El icono activo brillará en amarillo mostaza/dorado */
+    opacity: 1;                  /* Opacidad completa para destacar */
+    font-weight: 600;
 }
 
 .map-wrapper {
@@ -120,39 +122,426 @@ body {
     display: block;
 }
 
-/* Componente Conversor */
-.converter-box {
+
+/******************************************************************************************************************************
+                                                            DINERO
+******************************************************************************************************************************/
+
+/*******************************************************************************
+ 1. PANEL DE CONTROL SUPERIOR (Tarjeta de Presupuesto y Balances)
+*******************************************************************************/
+/* Contenedor principal: Forzamos colores oscuros fijos para que el texto blanco resalte siempre */
+.budget-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    color: #ffffff !important;
+    padding: 1.2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin-top: 1rem;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    box-sizing: border-box; /* Evita que el padding estire la tarjeta */
 }
 
-.converter-box input {
-    width: 100%;
-    padding: 0.6rem;
+/* Inserta la bandera polaca de fondo con opacidad baja en la tarjeta */
+.budget-card::before {
+    content: "🇵🇱";
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+    font-size: 4rem;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+/* Cabecera interna de la tarjeta (Título y Etiqueta en vivo alineados) */
+.budget-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.budget-card-header-title{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Texto del título secundario de la tarjeta (Forzado a gris claro para leerse sobre oscuro) */
+.budget-title {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #cbd5e1 !important;
+    display: block;
+    font-weight: 600;
+}
+
+/* Etiqueta verde que rodea el texto de la tasa del banco */
+.live-rate-badge {
+    display: inline-block;
+    background: rgba(40, 167, 69, 0.2);
+    color: #4cd137;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Sistema de cuadrícula para alinear los 3 bloques de datos en horizontal */
+.budget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding: 10px 0;
+    z-index: 1;
+}
+
+/* Columnas individuales dentro de la rejilla */
+.budget-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.box-header-row {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Separación pequeña entre el icono y las letras */
+    margin-bottom: 2px;
+}
+
+/* Controla el tamaño y evita que el icono se deforme */
+.box-svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* Reducción milimétrica de seguridad para fuentes en móviles estrechos */
+.box-number {
+    font-size: 1.05rem; /* Ajustado de 1.1rem para compensar el espacio del icono */
+    font-weight: bold;
+    white-space: nowrap;
+    color: #ffffff;
+}
+
+/* Etiquetas superiores de cada celda (Forzadas a blanco semitransparente) */
+.box-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.5px;
+    color: #94a3b8 !important;
+    font-weight: 700;
+}
+
+/* Estilo general para los números grandes de dinero */
+.box-number {
     font-size: 1.1rem;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 6px;
-    background: var(--bg-color);
+    font-weight: bold;
+    white-space: nowrap;
+    color: #ffffff;
+}
+
+/* Color para diferenciar la cifra total de gastos acumulados */
+.box-number.spent {
+    color: #e2e8f0 !important;
+}
+
+/* Texto de equivalencia en Zlotys situado abajo a la derecha */
+.budget-footer-text {
+    font-size: 0.8rem;
+    color: #cbd5e1 !important;
+    text-align: right;
+    z-index: 1;
+}
+
+/*******************************************************************************
+ 2. CONVERSOR DE DIVISAS INTERACTIVO (Cajas de entrada e intercambio)
+*******************************************************************************/
+
+/* Bloque contenedor global que apila el título arriba y la caja abajo */
+.converter-section {
+    margin-bottom: 2rem; /* El margen que quitamos del elemento HTML en línea */
+    display: flex;
+    flex-direction: column; /* Fuerza el orden vertical: Título arriba, caja abajo */
+    gap: 8px; /* Espacio de separación entre el título y la caja */
+    width: 100%;
+}
+
+.converter-section-container-title{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 7px;
+}
+
+/* Estilo exclusivo para el título del conversor */
+.converter-section-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    opacity: 0.9;
     color: var(--text-color);
 }
 
-.equals {
-    font-size: 1.5rem;
-    font-weight: bold;
+/* Contenedor horizontal blanco/gris que envuelve únicamente los inputs y las flechas */
+.converter-box {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.2rem;
+    display: flex; /* Este flexbox ahora solo alinea las cajas y el botón central en horizontal */
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+    width: 100%;
 }
 
-#pln-output {
+/* Bloques verticales internos para ordenar la etiqueta encima del input */
+.input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0; /* Evita que los inputs estiren la caja más de la cuenta */
+}
+
+/* Pequeño texto descriptivo encima de los inputs (Euros o Zlotys) */
+.input-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.6;
+}
+
+/* Campos numéricos de escritura donde introduces las monedas */
+.converter-box input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.8rem;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #28a745;
-    white-space: nowrap;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    height: 50px;
 }
 
-.checklist {
-    padding-left: 0;
+/* Botón central táctil con las flechas de inversión de sentido */
+.switch-btn {
+    background: var(--card-bg);
+    color: var(--primary-color);
+    border: none;
+    font-size: 1.4rem;
+    font-weight: bold;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px; /* Alinea las flechas a la altura del renglón de los inputs */
+    transition: transform 0.3s ease;
+    user-select: none;
+    flex-shrink: 0; /* Evita que el botón se aplaste en pantallas estrechas */
+}
+
+/* Pequeña animación de hundimiento cuando pulsas el botón central */
+.switch-btn:active {
+    transform: scale(0.9) !important;
+}
+
+/* Clase dinámica inyectada por JS para hacer rotar las flechas 180 grados */
+.switch-btn.rotate {
+    transform: rotate(180deg);
+}
+
+
+/*******************************************************************************
+ 3. FORMULARIO DE GASTOS DIARIOS (Caja de registro manual)
+*******************************************************************************/
+#expenses-timeline-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column; 
+    gap: 12px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+
+/* Envoltorio general del gráfico */
+.category-chart-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 1.5rem 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Contenedor de la barra (Riel base que ahora es oscuro/gris para contrastar en la app) */
+.category-bar-container {
+    width: 100%;
+    height: 12px; /* Un pelín más alta para tocarla mejor en el móvil */
+    background-color: rgba(0, 0, 0, 0.08); /* Gris suave de fondo */
+    border-radius: 6px;
+    overflow: hidden; 
+    display: flex; 
+}
+
+/* Bloque contenedor de la leyenda de categorías */
+.category-legend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; 
+    gap: 6px;
+}
+
+/* Elementos individuales de la leyenda (Actualizado el color de texto a var(--text-color)) */
+.legend-item {
+    font-size: 0.7rem;
+    color: var(--text-color); /* Hereda tu color de texto principal, adaptándose a modo claro/oscuro */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+/* Puntos de color circulares indicativos */
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Asignación exacta de colores de la leyenda a juego con las barras del JS */
+.dot.comida     { background-color: #ff4757; }
+.dot.ocio       { background-color: #ffa502; }
+.dot.entradas   { background-color: #2ed573; }
+.dot.transporte { background-color: #1e90ff; }
+
+/* Contenedor estilo burbuja flotante suave */
+.projection-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    border-left: 4px solid #0284c7; /* Borde azul de tu paleta ártica de referencia */
+}
+
+/* Fila superior que alinea la media monetaria calculada */
+.projection-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.projection-row strong {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+/* Mensaje inferior descriptivo de alerta o felicitación */
+.projection-status-msg {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    padding: 6px 8px;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 6px;
+}
+
+/* Bloque contenedor que agrupa todos los elementos del formulario */
+.expense-form {
+    background: var(--card-bg);
+    padding: 1.2rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    margin: 1.5rem 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Título de sección dentro del formulario */
+.expense-form h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Filas horizontales: Corregidas con flex-wrap para que se adapten perfectamente a pantallas pequeñas */
+.form-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ajuste elástico proporcional para los campos de texto de la primera fila */
+.form-row input[type="text"] {
+    flex: 2;
+    min-width: 0; /* Clave para que el flexbox reduzca el tamaño del input correctamente */
+}
+
+.form-row input[type="number"] {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Estilo unificado para las cajas de texto y menús desplegables del formulario */
+.form-row input, .form-row select {
+    width: 100%;
+    box-sizing: border-box; /* Obliga al padding a quedarse dentro del límite del borde */
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Configuración de interacción para los menús de selección de la segunda fila */
+.form-row select {
+    flex: 1;
+    cursor: pointer;
+    min-width: 0;
+}
+
+/* Botón grande inferior para añadir los datos al historial */
+.submit-expense-btn {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #0284c7; /* Azul vibrante de tu paleta ártica para que haga juego con el botón inferior */
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Efecto visual de pulsación sobre el botón de guardar */
+.submit-expense-btn:active {
+    transform: scale(0.99);
+    opacity: 0.9;
 }

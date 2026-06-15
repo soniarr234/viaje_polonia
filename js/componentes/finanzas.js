@@ -11,7 +11,7 @@ export function initConversor() {
         budgetSummary.innerHTML = `<p style="margin-top: 1rem; opacity: 0.7;">Presupuesto fijado: <strong>${datosViaje.presupuestoTotalEUR} EUR</strong></p>`;
     }
 
-    // API pública del Banco de Polonia (Corregido el error de sintaxis aquí abajo)
+    // API pública del Banco de Polonia
     fetch('https://nbp.pl')
         .then(res => res.json())
         .then(data => {
