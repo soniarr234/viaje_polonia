@@ -7,15 +7,6 @@
     --card-bg: #f1f5f9;        /* Gris claro para destacar tarjetas */
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #0f172a;   /* Azul noche profunda */
-        --text-color: #f8fafc;
-        --nav-bg: #1e293b;     /* Azul grisáceo oscuro */
-        --card-bg: #334155;    /* Gris azulado para las tarjetas */
-    }
-}
-
 body {
     margin: 0;
     font-family: system-ui, -apple-system, sans-serif;
