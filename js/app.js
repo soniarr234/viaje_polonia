@@ -43,6 +43,7 @@ initChecklist();
 initCountdown();
 initRouteSubNavigation();
 initEditableLogistics();
+initEditableHotels();
 
 // =========================================================================
 // 3. FUNCIONES DE LOS COMPONENTES
@@ -212,6 +213,135 @@ function initEditableLogistics() {
     actualizarResumenVuelos();
 }
 
+/* COMPONENTE ALOJAMIENTOS EDITABLES URBANO (Cracovia y Breslavia) */
+function initEditableHotels() {
+    const cardKrk = document.getElementById('card-hotel-krk');
+    const cardWro = document.getElementById('card-hotel-wro');
+    const modalKrk = document.getElementById('modal-hotel-krk');
+    const modalWro = document.getElementById('modal-hotel-wro');
+    const closeBtns = document.querySelectorAll('.close-modal-btn');
+
+    // Inputs Cracovia
+    const editKrkName = document.getElementById('edit-krk-name');
+    const editKrkPrice = document.getElementById('edit-krk-price');
+    const editKrkAddress = document.getElementById('edit-krk-address');
+    const editKrkCheckin = document.getElementById('edit-krk-checkin');
+    const editKrkCheckout = document.getElementById('edit-krk-checkout');
+    const editKrkStatus = document.getElementById('edit-krk-status');
+    const saveKrkBtn = document.getElementById('save-hotel-krk-btn');
+
+    // Inputs Breslavia
+    const editWroName = document.getElementById('edit-wro-name');
+    const editWroPrice = document.getElementById('edit-wro-price');
+    const editWroAddress = document.getElementById('edit-wro-address');
+    const editWroCheckin = document.getElementById('edit-wro-checkin');
+    const editWroCheckout = document.getElementById('edit-wro-checkout');
+    const editWroClockStatus = document.getElementById('edit-wro-status');
+    const saveWroBtn = document.getElementById('save-hotel-wro-btn');
+
+    // Selectores Resumen Pantalla
+    const briefKrkName = document.getElementById('brief-krk-name');
+    const briefKrkAddress = document.getElementById('brief-krk-address');
+    const briefKrkPrice = document.getElementById('brief-krk-price');
+    const briefKrkCheckin = document.getElementById('brief-krk-checkin');
+    const briefKrkCheckout = document.getElementById('brief-krk-checkout');
+    const briefKrkStatus = document.getElementById('brief-krk-status');
+
+    const briefWroName = document.getElementById('brief-wro-name');
+    const briefWroAddress = document.getElementById('brief-wro-address');
+    const briefWroPrice = document.getElementById('brief-wro-price');
+    const briefWroCheckin = document.getElementById('brief-wro-checkin');
+    const briefWroCheckout = document.getElementById('brief-wro-checkout');
+    const briefWroStatus = document.getElementById('brief-wro-status');
+
+    function cargarDatosHoteles() {
+        const hKrk = {
+            name: localStorage.getItem('h_krk_name') || "Atlantis Hostel",
+            price: localStorage.getItem('h_krk_price') || "80 €",
+            address: localStorage.getItem('h_krk_address') || "Westerplatte 16, Old Town",
+            checkin: localStorage.getItem('h_krk_checkin') || "14:00h",
+            checkout: localStorage.getItem('h_krk_checkout') || "11:00h",
+            status: localStorage.getItem('h_krk_status') || "Pagado"
+        };
+        const hWro = {
+            name: localStorage.getItem('h_wro_name') || "Korona Hotel",
+            price: localStorage.getItem('h_wro_price') || "340 PLN",
+            address: localStorage.getItem('h_wro_address') || "Rynek 29, Casco Antiguo",
+            checkin: localStorage.getItem('h_wro_checkin') || "15:00h",
+            checkout: localStorage.getItem('h_wro_checkout') || "10:00h",
+            status: localStorage.getItem('h_wro_status') || "En destino"
+        };
+
+        // Pintar en pantalla principal
+        if(briefKrkName) briefKrkName.textContent = hKrk.name;
+        if(briefKrkAddress) briefKrkAddress.textContent = hKrk.address;
+        if(briefKrkPrice) briefKrkPrice.textContent = hKrk.price;
+        if(briefKrkCheckin) briefKrkCheckin.textContent = hKrk.checkin;
+        if(briefKrkCheckout) briefKrkCheckout.textContent = hKrk.checkout;
+        if(briefKrkStatus) {
+            briefKrkStatus.textContent = hKrk.status;
+            briefKrkStatus.style.color = hKrk.status.toLowerCase().includes('pagado') ? '#2ed573' : '#f59e0b';
+        }
+
+        if(briefWroName) briefWroName.textContent = hWro.name;
+        if(briefWroAddress) briefWroAddress.textContent = hWro.address;
+        if(briefWroPrice) briefWroPrice.textContent = hWro.price;
+        if(briefWroCheckin) briefWroCheckin.textContent = hWro.checkin;
+        if(briefWroCheckout) briefWroCheckout.textContent = hWro.checkout;
+        if(briefWroStatus) {
+            briefWroStatus.textContent = hWro.status;
+            briefWroStatus.style.color = hWro.status.toLowerCase().includes('pagado') ? '#2ed573' : '#f59e0b';
+        }
+
+        // Rellenar inputs del popup
+        if(editKrkName) editKrkName.value = hKrk.name;
+        if(editKrkPrice) editKrkPrice.value = hKrk.price;
+        if(editKrkAddress) editKrkAddress.value = hKrk.address;
+        if(editKrkCheckin) editKrkCheckin.value = hKrk.checkin;
+        if(editKrkCheckout) editKrkCheckout.value = hKrk.checkout;
+        if(editKrkStatus) editKrkStatus.value = hKrk.status;
+
+        if(editWroName) editWroName.value = hWro.name;
+        if(editWroPrice) editWroPrice.value = hWro.price;
+        if(editWroAddress) editWroAddress.value = hWro.address;
+        if(editWroCheckin) editWroCheckin.value = hWro.checkin;
+        if(editWroCheckout) editWroCheckout.value = hWro.checkout;
+        if(editWroClockStatus) editWroClockStatus.value = hWro.status;
+    }
+
+    if (cardKrk && modalKrk) cardKrk.addEventListener('click', () => modalKrk.classList.add('open'));
+    if (cardWro && modalWro) cardWro.addEventListener('click', () => modalWro.classList.add('open'));
+
+    // Reutiliza las directivas de cierre de modales
+    if(saveKrkBtn) {
+        saveKrkBtn.addEventListener('click', () => {
+            localStorage.setItem('h_krk_name', editKrkName.value.trim());
+            localStorage.setItem('h_krk_price', editKrkPrice.value.trim());
+            localStorage.setItem('h_krk_address', editKrkAddress.value.trim());
+            localStorage.setItem('h_krk_checkin', editKrkCheckin.value.trim());
+            localStorage.setItem('h_krk_checkout', editKrkCheckout.value.trim());
+            localStorage.setItem('h_krk_status', editKrkStatus.value.trim());
+            modalKrk.classList.remove('open');
+            cargarDatosHoteles();
+        });
+    }
+
+    if(saveWroBtn) {
+        saveWroBtn.addEventListener('click', () => {
+            localStorage.setItem('h_wro_name', editWroName.value.trim());
+            localStorage.setItem('h_wro_price', editWroPrice.value.trim());
+            localStorage.setItem('h_wro_address', editWroAddress.value.trim());
+            localStorage.setItem('h_wro_checkin', editWroCheckin.value.trim());
+            localStorage.setItem('h_wro_checkout', editWroCheckout.value.trim());
+            localStorage.setItem('h_wro_status', editWroClockStatus.value.trim());
+            modalWro.classList.remove('open');
+            cargarDatosHoteles();
+        });
+    }
+
+    cargarDatosHoteles();
+}
+
 function renderItinerario() {
     const container = document.getElementById('timeline-container');
     if (!container) return;
@@ -224,6 +354,7 @@ function renderItinerario() {
         </div>
     `).join('');
 }
+
 
 function initConversor() {
     const inputLeft = document.getElementById('input-left');
@@ -246,6 +377,20 @@ function initConversor() {
 
     let tasaCambio = 4.32; 
     let esEuroAIzquierda = true;
+
+    const chips = document.querySelectorAll('.chip-btn');
+    let categoriaSeleccionada = "🍕 Comida"; // Valor por defecto inicial
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', (e) => {
+            // Quitamos la clase activa de todos los botones
+            chips.forEach(c => c.classList.remove('active'));
+            // Se la añadimos al que acabamos de pulsar
+            e.currentTarget.classList.add('active');
+            // Guardamos el texto de la categoría seleccionada en la variable
+            categoriaSeleccionada = e.currentTarget.getAttribute('data-value');
+        });
+    });
 
     // Cargar gastos guardados previamente en LocalStorage (si no hay ninguno, empieza vacío)
     let listaGastos = JSON.parse(localStorage.getItem('gastosViajePolonia')) || [];
@@ -450,26 +595,28 @@ function initConversor() {
             const precio = parseFloat(expAmount.value);
 
             if (!concepto || isNaN(precio) || precio <= 0) {
-                alert("Por favor, introduce un concepto válido y un precio mayor que cero.");
+                alert("Introduce un concepto y un precio correcto.");
                 return;
             }
 
-            // Crear objeto de gasto indexable con marcas únicas
             const nuevoGasto = {
-                id: 'exp_' + Date.now() + Math.random().toString(36).substr(2, 4),
+                id: 'exp_' + Date.now(),
                 concepto: concepto,
                 precio: precio,
                 moneda: expCurrency.value,
-                categoria: expCategory.value,
+                categoria: expCategory.value, // Volvemos a leer de forma normal el select.value
                 dia: expDay.value
             };
 
-            // Insertar a nuestra base de datos, guardar en memoria local y limpiar inputs
             listaGastos.push(nuevoGasto);
             localStorage.setItem('gastosViajePolonia', JSON.stringify(listaGastos));
-            
             expConcept.value = "";
             expAmount.value = "";
+            
+            // Opcional: Reiniciar al chip por defecto de comida tras guardar
+            chips.forEach(c => c.classList.remove('active'));
+            if(chips[0]) chips[0].classList.add('active');
+            categoriaSeleccionada = "🍕 Comida";
 
             actualizarPantallaFinanzas();
         });

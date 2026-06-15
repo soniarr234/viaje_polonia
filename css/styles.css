@@ -197,7 +197,6 @@ body {
 .budget-box {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
 }
 
@@ -456,6 +455,78 @@ body {
     padding: 6px 8px;
     background: rgba(0, 0, 0, 0.02);
     border-radius: 6px;
+}
+
+/*******************************************************************************
+ 3.1 BOTONES SELECTORES DE CATEGORÍA (Chips interactivos para móvil)
+*******************************************************************************/
+
+/* Pequeña etiqueta de título superior */
+.category-chips-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.6;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+/* Hilera que alinea los 4 botones en horizontal ocupando todo el ancho */
+.category-chips-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Estilo individual de las píldoras de categorías */
+.chip-btn {
+    flex: 1;
+    background-color: var(--bg-color); /* Fondo grisáceo claro por defecto */
+    color: var(--text-color);
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 0.5rem 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap; /* Evita que el texto salte de línea */
+    text-align: center;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    outline: none;
+}
+
+/* Estado activo: cuando pulsas la categoría se ilumina en amarillo/oro navideño */
+.chip-btn.active {
+    background-color: #fbbf24 !important; /* Tu amarillo bombilla navideña */
+    color: #000000 !important;            /* Texto oscuro para máximo contraste */
+    border-color: #fbbf24 !important;
+}
+/*******************************************************************************
+ 3.2 PROPORCIONES EXACTAS DEL FORMULARIO PARA MÓVIL
+*******************************************************************************/
+
+/* Fila 1: Deja el 65% de espacio al texto del concepto y el 35% al precio */
+.flex-input-concept {
+    flex: 65;
+    min-width: 0;
+}
+.flex-input-price {
+    flex: 35;
+    min-width: 0;
+}
+
+/* Fila 2: Divide la pantalla en dos mitades perfectas (50% cada una) */
+.flex-input-half {
+    flex: 1;
+    min-width: 0;
+    width: 50%;
+}
+
+/* Fila 3: Ocupa todo el ancho disponible horizontal de forma rotunda */
+.flex-input-full {
+    width: 100%;
+    flex: 1;
 }
 
 /* Bloque contenedor que agrupa todos los elementos del formulario */
@@ -794,6 +865,7 @@ body {
     opacity: 0.5;
     text-align: right;
     font-weight: 500;
+    margin-top: 15px;
 }
 
 /* =========================================================================
