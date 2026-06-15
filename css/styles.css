@@ -28,11 +28,25 @@ body {
 .view {
     display: none;
     padding: 1rem;
-    padding-bottom: 5rem; /* Evita que la barra tape contenido */
+    padding-bottom: 5rem; /* Evita que la barra tape contenido en las otras pestañas */
+}
+
+/* REGLA ESPECÍFICA PARA EL MAPA: Elimina el padding para pantalla completa */
+#tab-map {
+    padding: 0; 
+    height: calc(100vh - 60px); /* 100% alto de pantalla menos los 60px de la barra inferior */
+    width: 100vw;
+    overflow: hidden;
 }
 
 .view.active {
+    /* Usamos display flex o block según la sección; para el mapa asegura el estiramiento */
     display: block;
+}
+
+#tab-map.view.active {
+    display: flex;
+    flex-direction: column;
 }
 
 /* Barra inferior fija */
@@ -70,4 +84,19 @@ body {
     color: var(--primary-color);
     opacity: 1;
     font-weight: bold;
+}
+
+/* ==========================================
+   ESTILOS AGREGADOS PARA PANTALLA COMPLETA DEL MAPA
+   ========================================== */
+.map-wrapper {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+}
+
+.map-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
