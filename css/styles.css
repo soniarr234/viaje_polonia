@@ -1,16 +1,18 @@
 /* Variables globales para simplificar colores */
 :root {
     --bg-color: #ffffff;
-    --text-color: #212529;
-    --primary-color: #dc3545; /* Rojo bandera de Polonia */
-    --nav-bg: #f8f9fa;
+    --text-color: #1e293b;     /* Gris casi negro muy suave */
+    --primary-color: #0284c7;  /* Azul ártico vibrante */
+    --nav-bg: #f8fafc;         /* Blanco nieve limpio */
+    --card-bg: #f1f5f9;        /* Gris claro para destacar tarjetas */
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-color: #121212;
-        --text-color: #f8f9fa;
-        --nav-bg: #1e1e1e;
+        --bg-color: #0f172a;   /* Azul noche profunda */
+        --text-color: #f8fafc;
+        --nav-bg: #1e293b;     /* Azul grisáceo oscuro */
+        --card-bg: #334155;    /* Gris azulado para las tarjetas */
     }
 }
 
@@ -24,23 +26,43 @@ body {
     min-height: 100vh;
 }
 
+.app-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.badge {
+    background: rgba(255,255,255,0.2);
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
 /* Sistema de enrutado básico SPA */
 .view {
     display: none;
     padding: 1rem;
-    padding-bottom: 5rem; /* Evita que la barra tape contenido en las otras pestañas */
+    padding-bottom: 5rem;
 }
 
-/* REGLA ESPECÍFICA PARA EL MAPA: Elimina el padding para pantalla completa */
 #tab-map {
     padding: 0; 
-    height: calc(100vh - 60px); /* 100% alto de pantalla menos los 60px de la barra inferior */
+    height: calc(100vh - 110px); /* Ajustado restando cabecera y navegación */
     width: 100vw;
     overflow: hidden;
 }
 
 .view.active {
-    /* Usamos display flex o block según la sección; para el mapa asegura el estiramiento */
     display: block;
 }
 
@@ -86,9 +108,6 @@ body {
     font-weight: bold;
 }
 
-/* ==========================================
-   ESTILOS AGREGADOS PARA PANTALLA COMPLETA DEL MAPA
-   ========================================== */
 .map-wrapper {
     width: 100%;
     height: 100%;
@@ -99,4 +118,41 @@ body {
     width: 100%;
     height: 100%;
     display: block;
+}
+
+/* Componente Conversor */
+.converter-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+.converter-box input {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1.1rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.equals {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#pln-output {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #28a745;
+    white-space: nowrap;
+}
+
+.checklist {
+    padding-left: 0;
 }
