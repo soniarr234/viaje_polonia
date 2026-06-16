@@ -33,6 +33,40 @@ const datosViaje = {
     ]
 };
 
+const infoCiudades = {
+    Cracovia: {
+        lugares: [
+            {
+                titulo: "🎄 Rynek Główny y Mercado Navideño",
+                historia: "Es la plaza medieval más grande de Europa (siglo XIII). En diciembre se llena de luces, puestos de madera, olor a vino caliente (Grzaniec) y los famosos belenes polacos (Szopki).",
+                tip: "Escucha el Hejnał Mariacki (toque de trompeta) desde la torre de la Basílica de Santa María cada hora en punto."
+            },
+            {
+                titulo: "🏰 Castillo de Wawel",
+                historia: "Sede de los reyes polacos durante siglos. Mezcla estilos góticos y renacentistas. En la base del acantilado está la estatua del Dragón de Wawel.",
+                tip: "¡La estatua del dragón escupe fuego real cada pocos minutos! Solo hay que esperar en la base a que ocurra."
+            }
+        ],
+        restaurantes: [
+            { nombre: "Pod Wawelem 🍖", desc: "Al lado del castillo. Raciones gigantescas y baratas de comida tradicional polaca. Ideal para probar el codillo (Golonka) o Schnitzel." },
+            { nombre: "Pierogarnia Mandragora 🥟", desc: "El mejor sitio para probar Pierogis artesanales (los hay dulces, salados y horneados). Ambiente acogedor de invierno." }
+        ]
+    },
+    Breslavia: {
+        lugares: [
+            {
+                titulo: "🧝 Caza de los Gnomos (Krasnale)",
+                historia: "Hay más de 400 estatuas de bronce de pequeños gnomos escondidas por la ciudad. Nacieron como una protesta pacífica y satírica del movimiento 'Alternativa Naranja' contra el régimen comunista en los años 80.",
+                tip: "Descárgate la app gratuita 'Krasnale' en el móvil para ir registrando en el mapa los gnomos que vayas encontrando por el suelo."
+            }
+        ],
+        restaurantes: [
+            { nombre: "Piwnica Świdnicka 🍺", desc: "Ubicado en los sótanos del ayuntamiento. Es el restaurante en funcionamiento más antiguo de toda Europa (desde 1273). Sirve cerveza artesanal espectacular." }
+        ]
+    }
+};
+
+let eventosCiudadesAsignados = false;
 // =========================================================================
 // 2. ORQUESTADOR PRINCIPAL (Ejecución al cargar el archivo)
 // =========================================================================
@@ -89,6 +123,11 @@ function initRouteSubNavigation() {
             subViews.forEach(view => {
                 if (view.id === targetSub) {
                     view.classList.add('active');
+                    
+                    // ACCIÓN COMPLEMENTARIA: Si abre la sub-vista de ciudades, forzamos el renderizado en caliente
+                    if (targetSub === 'sub-ciudades') {
+                        renderItinerario();
+                    }
                 } else {
                     view.classList.remove('active');
                 }
@@ -96,6 +135,7 @@ function initRouteSubNavigation() {
         });
     });
 }
+
 
 /* COMPONENTE LOGÍSTICA EDITABLE (Persistencia en memoria de Transportes y Alojamientos) */
 /* COMPONENTE LOGÍSTICA EDITABLE CON POPUPS MODALES (Ida y Vuelta) */
@@ -343,16 +383,119 @@ function initEditableHotels() {
 }
 
 function renderItinerario() {
+    const subCiudades = document.getElementById('sub-ciudades');
+    const dashboard = document.getElementById('cities-dashboard');
+    const detailView = document.getElementById('city-detail-view');
     const container = document.getElementById('timeline-container');
-    if (!container) return;
 
-    container.innerHTML = datosViaje.itinerario.map(item => `
-        <div class="timeline-item" style="margin-bottom: 1.5rem; padding: 1rem; border-left: 3px solid var(--primary-color); background: rgba(0,0,0,0.02); border-radius: 0 8px 8px 0;">
-            <div style="font-weight: bold; color: var(--primary-color); font-size: 0.9rem;">Día ${item.dia} - ${item.fecha}</div>
-            <h3 style="margin: 0.2rem 0;">${item.ciudad}</h3>
-            <p style="margin: 0; font-size: 0.95rem; opacity: 0.8;">${item.actividad}</p>
-        </div>
-    `).join('');
+    if (!subCiudades || !dashboard || !detailView || !container) return;
+
+    // Función que arma el contenido detallado de la ciudad elegida
+    function mostrarDetalleCiudad(ciudadSeleccionada) {
+        const diasFiltrados = datosViaje.itinerario.filter(item => item.ciudad.toLowerCase() === ciudadSeleccionada.toLowerCase());
+        const datosExtra = infoCiudades[ciudadSeleccionada] || { lugares: [], restaurantes: [] };
+
+        const itinerarioHTML = diasFiltrados.map(item => `
+            <div class="timeline-item" style="margin-bottom: 1.5rem; padding: 1rem; border-left: 3px solid var(--primary-color, #ffa502); background: rgba(0,0,0,0.02); border-radius: 0 8px 8px 0;">
+                <div style="font-weight: bold; color: var(--primary-color, #ffa502); font-size: 0.9rem;">Día ${item.dia} - ${item.fecha}</div>
+                <h3 style="margin: 0.2rem 0; color: var(--text-color);">${item.ciudad}</h3>
+                <p style="margin: 0; font-size: 0.95rem; opacity: 0.8; color: var(--text-color);">${item.actividad}</p>
+            </div>
+        `).join('');
+
+        const lugaresHTML = datosExtra.lugares.map(lugar => `
+            <div class="accordion-item" style="background: var(--card-bg, rgba(255, 255, 255, 0.04)); border-radius: 12px; margin-bottom: 0.8rem; overflow: hidden; border: 1px solid rgba(128, 128, 128, 0.15);">
+                <button class="accordion-header" style="width: 100%; background: none; border: none; padding: 1rem; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left;">
+                    <span>${lugar.titulo}</span>
+                    <span class="icon" style="transition: transform 0.3s; font-size: 0.8rem;">▼</span>
+                </button>
+                <div class="accordion-content" style="max-height: 0; overflow: hidden; padding: 0 1rem; transition: all 0.3s ease; font-size: 0.9rem; line-height: 1.4; opacity: 0.9; color: var(--text-color);">
+                    <p style="margin: 8px 0;">📜 <strong>Historia:</strong> ${lugar.historia}</p>
+                    <p style="margin: 0 0 8px 0; color: #0284c7;">💡 <strong>Tip Pro:</strong> ${lugar.tip}</p>
+                </div>
+            </div>
+        `).join('');
+
+        const localesHTML = datosExtra.restaurantes.map(rest => `
+            <div style="background: rgba(0, 0, 0, 0.02); border-left: 4px solid #2ed573; padding: 12px; border-radius: 8px; margin-bottom: 10px; color: var(--text-color);">
+                <h4 style="margin: 0 0 4px 0; color: inherit; font-size: 0.95rem;">${rest.nombre}</h4>
+                <p style="margin: 0; font-size: 0.85rem; opacity: 0.8; line-height: 1.3;">${rest.desc}</p>
+            </div>
+        `).join('');
+
+        container.innerHTML = `
+            <h2 style="margin: 0 0 1.5rem 0; color: var(--text-color); font-size: 1.4rem;">📍 Explorando ${ciudadSeleccionada}</h2>
+            <h4 style="margin: 0 0 1rem 0; opacity: 0.5; font-size: 0.75rem; letter-spacing: 1px; color: var(--text-color);">📅 PLAN DE ITINERARIO</h4>
+            ${itinerarioHTML}
+            
+            <h4 style="margin: 1.8rem 0 1rem 0; opacity: 0.5; font-size: 0.75rem; letter-spacing: 1px; color: var(--text-color);">🗺️ MONUMENTOS E IMPRESCINDIBLES</h4>
+            <div class="places-accordion-wrapper">${lugaresHTML}</div>
+            
+            <h4 style="margin: 1.8rem 0 1rem 0; opacity: 0.5; font-size: 0.75rem; letter-spacing: 1px; color: var(--text-color);">🍲 DÓNDE COMER Y BEBER</h4>
+            <div>${localesHTML}</div>
+        `;
+
+        dashboard.style.display = "none";
+        detailView.style.display = "block";
+    }
+
+    // =========================================================================
+    // SOLUCIÓN TOTAL: DELEGACIÓN CENTRALIZADA DE CLICS EN EL PADRE PRINCIPAL
+    // =========================================================================
+    if (!eventosCiudadesAsignados) {
+        
+        subCiudades.addEventListener('click', (e) => {
+            // 1. Manejo del clic en los cuadrados del menú principal
+            const card = e.target.closest('.city-dash-card');
+            if (card) {
+                const ciudadTarget = card.getAttribute('data-target-city');
+                mostrarDetalleCiudad(ciudadTarget);
+                return;
+            }
+
+            // 2. Manejo del clic en el botón de regresar "Volver"
+            const backBtn = e.target.closest('#back-to-dashboard-btn');
+            if (backBtn) {
+                detailView.style.display = "none";
+                dashboard.style.display = "grid";
+                container.innerHTML = "";
+                return;
+            }
+
+            // 3. Manejo del clic en las cabeceras de los acordeones desplegables
+            const header = e.target.closest('.accordion-header');
+            if (header) {
+                const item = header.closest('.accordion-item');
+                const content = item.querySelector('.accordion-content');
+                const icon = item.querySelector('.icon');
+
+                if (item.classList.contains('open')) {
+                    item.classList.remove('open');
+                    content.style.maxHeight = "0";
+                    content.style.paddingBottom = "0";
+                    icon.style.transform = "rotate(0deg)";
+                } else {
+                    container.querySelectorAll('.accordion-item').forEach(el => {
+                        el.classList.remove('open');
+                        const c = el.querySelector('.accordion-content');
+                        const i = el.querySelector('.icon');
+                        if (c) c.style.maxHeight = "0";
+                        if (c) c.style.paddingBottom = "0";
+                        if (i) i.style.transform = "rotate(0deg)";
+                    });
+
+                    item.classList.add('open');
+                    content.style.maxHeight = "350px";
+                    content.style.paddingBottom = "1rem";
+                    icon.style.transform = "rotate(180deg)";
+                }
+                return;
+            }
+        });
+
+        // Marcamos como asignado para que no duplique el hilo de memoria
+        eventosCiudadesAsignados = true;
+    }
 }
 
 
@@ -386,12 +529,6 @@ function initConversor() {
     // Cargar gastos guardados previamente en LocalStorage (si no hay ninguno, empieza vacío)
     let listaGastos = JSON.parse(localStorage.getItem('gastosViajePolonia')) || [];
     let filtroCategoria = "ALL";
-
-    
-    const listaFiltrada = listaGastos.filter(g => {
-        if (filtroCategoria === "ALL") return true;
-        return g.categoria === filtroCategoria;
-    });
 
     expensesContainer.addEventListener('click', (e) => {
         if (e.target.textContent === "✕") {
@@ -441,7 +578,12 @@ function initConversor() {
         });
 
         // 2. Función principal que calcula los totales y dibuja los gastos en la pantalla
-    function actualizarPantallaFinanzas() {
+    function actualizarPantallaFinanzas() {     
+        const listaFiltrada = listaGastos.filter(g => {
+            if (filtroCategoria === "ALL") return true;
+            return g.categoria === filtroCategoria;
+        });
+
         const budgetInitialVal = document.getElementById('budget-initial-val');
         const budgetSpentVal = document.getElementById('budget-spent-val');
         const budgetRestVal = document.getElementById('budget-rest-val');

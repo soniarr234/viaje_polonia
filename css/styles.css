@@ -776,6 +776,120 @@ body {
     display: block;
 }
 
+
+/* =========================================================================
+   COMPONENTE INTERACTIVO DE CIUDADES (Acordeones y Tarjetas Gastronómicas)
+   ========================================================================= */
+
+/* Contenedor de los botones (Chips) de selección rápida */
+.city-selector-chips {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Botón individual de ciudad */
+.city-chip {
+    flex: 1;
+    border: none;
+    padding: 0.7rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: rgba(128, 128, 128, 0.08);
+    color: var(--text-color, #222);
+    opacity: 0.7;
+    transition: all 0.25s ease;
+}
+
+/* Estado activo del botón al seleccionarse */
+.city-chip.active {
+    background-color: #0284c7 !important; /* Azul corporativo idéntico a tus sub-nav-btn */
+    color: #ffffff !important;
+    opacity: 1;
+    box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
+}
+
+/* Elementos individuales del Acordeón Turístico */
+.accordion-item {
+    background: var(--card-bg, rgba(255, 255, 255, 0.04));
+    border-radius: 10px;
+    margin-bottom: 0.6rem;
+    overflow: hidden;
+    border: 1px solid rgba(128, 128, 128, 0.15);
+    transition: border-color 0.2s ease;
+}
+
+/* Encabezado del Acordeón (Botón interactivo de despliegue) */
+.accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0.9rem 1rem;
+    color: var(--text-color, #222);
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+/* Contenedor oculto de la historia y los trucos */
+.accordion-content {
+    max-height: 0; /* Empieza colapsado */
+    overflow: hidden;
+    padding: 0 1rem;
+    transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s ease; /* Efecto despliegue fluido */
+    font-size: 0.85rem;
+    line-height: 1.45;
+    opacity: 0.9;
+}
+
+/* Elemento en estado abierto */
+.accordion-item.open {
+    border-color: rgba(2, 132, 199, 0.4); /* Resalta el borde al expandirse */
+}
+
+/* Separadores internos para mantener títulos limpios de subtítulos */
+.places-accordion-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+/* Animación interactiva en las tarjetas del menú de ciudades */
+.city-dash-card {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+}
+
+.city-dash-card:active {
+    transform: scale(0.97) translateY(2px); /* Efecto hundido elástico al pulsar en móvil */
+    background-color: rgba(128, 128, 128, 0.05) !important;
+}
+
+/* Soporte de despliegue suave del acordeón interior */
+.accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 1rem;
+    transition: max-height 0.25s ease-out, padding 0.25s ease;
+}
+
+
 /*******************************************************************************
  6.1 COMPONENTE SUPERTARJETA DE VUELOS (Reestructurado)
 *******************************************************************************/

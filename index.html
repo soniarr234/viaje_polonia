@@ -145,7 +145,7 @@
                     
                     <!-- SUPERTARJETA 1: CRACOVIA -->
                     <div class="super-container-card">
-                        <h2 class="super-card-title">🏰 Alojamiento en Cracovia</h2>
+                        <h2 class="super-card-title"> Alojamiento en Cracovia</h2>
                         <div class="flight-summary-card" id="card-hotel-krk">
 
                             <div class="hotel-card-badge-row">
@@ -160,13 +160,13 @@
                                 <div class="brief-item"><span>Precio Total</span><strong id="brief-krk-price">80 €</strong></div>
                                 <div class="brief-item"><span>Estado de Pago</span><strong id="brief-krk-status" style="color:#2ed573;">Pagado</strong></div>
                             </div>
-                            <div class="flight-card-footer">👁️ Pulsa para detalles o editar</div>
+                            <div class="flight-card-footer">Pulsa para detalles o editar</div>
                         </div>
                     </div>
 
                     <!-- SUPERTARJETA 2: BRESLAVIA -->
                     <div class="super-container-card">
-                        <h2 class="super-card-title">🌲 Alojamiento en Breslavia (Wrocław)</h2>
+                        <h2 class="super-card-title"> Alojamiento en Breslavia (Wrocław)</h2>
                         <div class="flight-summary-card" id="card-hotel-wro">
 
                             <div class="hotel-card-badge-row">
@@ -181,7 +181,7 @@
                                 <div class="brief-item"><span>Precio Total</span><strong id="brief-wro-price">340 PLN</strong></div>
                                 <div class="brief-item"><span>Estado de Pago</span><strong id="brief-wro-status" style="color:#f59e0b;">En destino</strong></div>
                             </div>
-                            <div class="flight-card-footer">👁️ Pulsa para detalles o editar</div>
+                            <div class="flight-card-footer">Pulsa para detalles o editar</div>
                         </div>
                     </div>
 
@@ -293,11 +293,37 @@
 
                 </div>
 
-                <!-- SUB-VISTA C: CIUDADES (Línea de tiempo dinámica) -->
+                <!-- SUB-VISTA C: CIUDADES (Estructura de tarjetas por días) -->
                 <div id="sub-ciudades" class="sub-view">
-                    <div class="timeline" id="timeline-container">
-                        <!-- JS inyectará el itinerario de Cracovia y Breslavia aquí -->
+                    
+                    <!-- NIVEL 1: Cuadrícula principal de días (Se muestra al principio) -->
+                    <div id="cities-dashboard" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%;">
+    
+                        <!-- Cuadrado Cracovia con contra-bloqueo CSS en línea -->
+                        <div class="city-dash-card" data-target-city="Cracovia" style="pointer-events: auto !important; cursor: pointer; background: var(--card-bg); padding: 1.2rem; border-radius: 16px; border-left: 4px solid #0284c7; display: flex; flex-direction: column; gap: 6px;">
+                            <span style="pointer-events: none; font-size: 0.75rem; font-weight: bold; color: #0284c7; opacity: 0.8;">📅 DÍAS 1 y 2</span>
+                            <h3 style="pointer-events: none; margin: 0; font-size: 1.2rem; color: var(--text-color);">Cracovia 🏰</h3>
+                            <p style="pointer-events: none; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.6;">Mercados navideños, Castillo de Wawel y gastronomía.</p>
+                        </div>
+
+                        <!-- Cuadrado Breslavia con contra-bloqueo CSS en línea -->
+                        <div class="city-dash-card" data-target-city="Breslavia" style="pointer-events: auto !important; cursor: pointer; background: var(--card-bg); padding: 1.2rem; border-radius: 16px; border-left: 4px solid #2ed573; display: flex; flex-direction: column; gap: 6px;">
+                            <span style="pointer-events: none; font-size: 0.75rem; font-weight: bold; color: #2ed573; opacity: 0.8;">📅 DÍA 3</span>
+                            <h3 style="pointer-events: none; margin: 0; font-size: 1.2rem; color: var(--text-color);">Breslavia 🧝</h3>
+                            <p style="pointer-events: none; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.6;">Ruta de los gnomos de bronce y sótanos históricos.</p>
+                        </div>
+                        
                     </div>
+
+                    <!-- NIVEL 2: Contenedor interno de información (Oculto al inicio) -->
+                    <div id="city-detail-view" style="display: none; width: 100%;">
+                        <!-- Botón flotante para regresar al menú de cuadrados -->
+                        <button id="back-to-dashboard-btn" style="background: rgba(128,128,128,0.1); border: none; color: var(--text-color); padding: 8px 14px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; cursor: pointer; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 4px;">⬅️ Volver</button>
+                        
+                        <!-- Aquí el JS inyectará dinámicamente todo lo de esa ciudad (Itinerario, Qué ver, Restaurantes) -->
+                        <div class="timeline" id="timeline-container"></div>
+                    </div>
+                    
                 </div>
             </section>
 
