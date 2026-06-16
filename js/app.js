@@ -356,6 +356,71 @@ function renderItinerario() {
 }
 
 
+
+/**************************************************************************************************************************************
+                                                    Pestaña 2: MAPA
+**************************************************************************************************************************************/
+/* SISTEMA ENRUTADOR PRINCIPAL (Pestañas del Menú Inferior) */
+function initNavigation() {
+    const buttons = document.querySelectorAll('.nav-btn');
+    const views = document.querySelectorAll('.view');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const currentBtn = e.currentTarget;
+            const target = currentBtn.getAttribute('data-target');
+
+            buttons.forEach(b => b.classList.remove('active'));
+            currentBtn.classList.add('active');
+
+            views.forEach(view => {
+                if (view.id === target) {
+                    view.classList.add('active');
+                    // ... tu lógica anterior de carga diferida del iframe
+                } else {
+                    view.classList.remove('active');
+                    // Si salimos de la pestaña del mapa, aseguramos que se bloquee de nuevo
+                    if (view.id === 'tab-map' && mapWrapper) {
+                        mapWrapper.classList.remove('active');
+                    }
+                }
+            });
+            
+            window.scrollTo(0, 0);
+        });
+    });
+}
+
+// =========================================================================
+// MEJORA TÁCTIL: CONTROL DE INTERACCIÓN DEL MAPA
+// =========================================================================
+const mapWrapper = document.querySelector('.map-wrapper');
+
+if (mapWrapper) {
+    // Activa el mapa al hacer clic o pulsar sobre él
+    mapWrapper.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evita que el clic se propague al documento inmediatamente
+        mapWrapper.classList.add('active');
+    });
+
+    // Desactiva el mapa si el usuario toca en cualquier otro lugar de la pantalla
+    document.addEventListener('click', (e) => {
+        if (!mapWrapper.contains(e.target)) {
+            mapWrapper.classList.remove('active');
+        }
+    });
+
+    // Soporte extra para pantallas táctiles (desactivar al iniciar scroll general)
+    document.addEventListener('touchstart', (e) => {
+        if (!mapWrapper.contains(e.target)) {
+            mapWrapper.classList.remove('active');
+        }
+    }, { passive: true });
+}
+
+/**************************************************************************************************************************************
+                                                    Pestaña 3: CONVERSOR Y GASTOS
+**************************************************************************************************************************************/
 function initConversor() {
     const inputLeft = document.getElementById('input-left');
     const inputRight = document.getElementById('input-right');
@@ -379,7 +444,36 @@ function initConversor() {
     let esEuroAIzquierda = true;
 
     const chips = document.querySelectorAll('.chip-btn');
-    let categoriaSeleccionada = "🍕 Comida"; // Valor por defecto inicial
+
+    // Cargar gastos guardados previamente en LocalStorage (si no hay ninguno, empieza vacío)
+    let listaGastos = JSON.parse(localStorage.getItem('gastosViajePolonia')) || [];
+    let filtroCategoria = "ALL";
+
+    
+    const listaFiltrada = listaGastos.filter(g => {
+        if (filtroCategoria === "ALL") return true;
+        return g.categoria === filtroCategoria;
+    });
+
+    expensesContainer.addEventListener('click', (e) => {
+        if (e.target.textContent === "✕") {
+
+            const item = e.target.closest('.expense-item');
+            if (!item) return;
+
+            const id = item.dataset.id;
+
+            item.style.transition = "opacity 0.2s ease, transform 0.2s ease";
+            item.style.opacity = "0";
+            item.style.transform = "translateX(20px)";
+
+            setTimeout(() => {
+                listaGastos = listaGastos.filter(g => g.id !== id);
+                localStorage.setItem('gastosViajePolonia', JSON.stringify(listaGastos));
+                actualizarPantallaFinanzas();
+            }, 200);
+        }
+    });
 
     chips.forEach(chip => {
         chip.addEventListener('click', (e) => {
@@ -388,25 +482,23 @@ function initConversor() {
             // Se la añadimos al que acabamos de pulsar
             e.currentTarget.classList.add('active');
             // Guardamos el texto de la categoría seleccionada en la variable
-            categoriaSeleccionada = e.currentTarget.getAttribute('data-value');
+            filtroCategoria = e.currentTarget.getAttribute('data-value');
+            actualizarPantallaFinanzas();
         });
     });
 
-    // Cargar gastos guardados previamente en LocalStorage (si no hay ninguno, empieza vacío)
-    let listaGastos = JSON.parse(localStorage.getItem('gastosViajePolonia')) || [];
-
     // 1. Llamada inicial a la API para capturar la tasa real
-    fetch('https://nbp.pl')
+    fetch('https://api.nbp.pl/api/exchangerates/rates/A/EUR/?format=json')
         .then(res => res.json())
         .then(data => {
-            if (data && data.rates && data.rates[0] && data.rates[0].mid) {
+            if (data && data.rates && data.rates[0]) {
                 tasaCambio = data.rates[0].mid;
                 if (liveRateText) liveRateText.textContent = tasaCambio.toFixed(2);
                 actualizarPantallaFinanzas();
             }
         })
-        .catch(err => {
-            console.log("Modo offline: Usando tasa estática 4.32", err);
+        .catch(() => {
+            console.log("Modo offline: usando tasa fallback");
             actualizarPantallaFinanzas();
         });
 
@@ -421,7 +513,7 @@ function initConversor() {
         // 1. Inicializar acumuladores por categoría
         let totalGastadoEUR = 0;
         const totalesPorCategoria = {
-            "🍕 Comida": 0,
+            "🍔 Comida": 0,
             "🎭 Ocio": 0,
             "🎟️ Entradas": 0,
             "🚇 Transporte": 0
@@ -444,7 +536,7 @@ function initConversor() {
                 categoryBarChart.innerHTML = `<div style="width: 100%; background: rgba(255,255,255,0.1); height: 100%;"></div>`;
             } else {
                 // Calculamos los porcentajes relativos de cada bloque
-                const pctComida = (totalesPorCategoria["🍕 Comida"] / totalGastadoEUR) * 100;
+                const pctComida = (totalesPorCategoria["🍔 Comida"] / totalGastadoEUR) * 100;
                 const pctOcio = (totalesPorCategoria["🎭 Ocio"] / totalGastadoEUR) * 100;
                 const pctEntradas = (totalesPorCategoria["🎟️ Entradas"] / totalGastadoEUR) * 100;
                 const pctTransp = (totalesPorCategoria["🚇 Transporte"] / totalGastadoEUR) * 100;
@@ -460,7 +552,7 @@ function initConversor() {
 
         // CALCULAR PROMEDIO DIARIO Y PROYECCIÓN
         if (projectionBox) {
-            if (listaGastos.length === 0) {
+            if (listaFiltrada.length === 0) {
                 // Si está vacío, ocultamos la tarjeta para no ensuciar la pantalla
                 projectionBox.style.display = "none";
             } else {
@@ -548,33 +640,105 @@ function initConversor() {
             gastosAgrupadosPorDia[gasto.dia].push(gasto);
         });
 
-        expensesContainer.innerHTML = Object.keys(gastosAgrupadosPorDia).sort().map(dia => {
-            const gastosDelDia = gastosAgrupadosPorDia[dia];
-            let subtotalDiaEUR = gastosDelDia.reduce((sum, g) => sum + (g.moneda === 'EUR' ? g.precio : g.precio / tasaCambio), 0);
+        function renderListaGastos() {
+            if (!expensesContainer) return;
 
-            const itemsHTML = gastosDelDia.map(gasto => `
-                <div class="expense-item" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-color); padding:0.6rem 0.8rem; border-radius:8px; margin-bottom:0.5rem; font-size:0.9rem; border-left: 3px solid var(--primary-color);">
-                    <div>
-                        <span style="font-size:0.7rem; background:rgba(0,0,0,0.05); padding:2px 6px; border-radius:4px; margin-right:4px;">${gasto.categoria}</span>
-                        <strong>${gasto.concepto}</strong>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <span>${gasto.precio.toFixed(2)} ${gasto.moneda === 'EUR' ? '€' : 'PLN'}</span>
-                        <button class="delete-exp-btn" data-id="${gasto.id}" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.9rem; padding:4px;">✕</button>
-                    </div>
-                </div>
-            `).join('');
+            const listaFiltrada = listaGastos.filter(g => {
+                if (filtroCategoria === "ALL") return true;
+                return g.categoria === filtroCategoria;
+            });
+            
+            expensesContainer.innerHTML = ""; // Limpieza controlada
 
-            return `
-                <div class="day-expense-block" style="background: var(--card-bg); padding:1rem; border-radius:12px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.02);">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:0.8rem; border-bottom:1px solid rgba(0,0,0,0.05); padding-bottom:4px; font-size:0.85rem;">
-                        <strong>📅 Día del viaje: ${dia}</strong>
-                        <span style="opacity:0.7;">Total día: <strong>${subtotalDiaEUR.toFixed(1)} €</strong></span>
-                    </div>
-                    ${itemsHTML}
-                </div>
-            `;
-        }).join('');
+            if (listaGastos.length === 0) {
+                expensesContainer.innerHTML = `<p style="text-align:center; opacity:0.5; padding:20px;">No hay gastos registrados todavía.</p>`;
+                return;
+            }
+
+            // Agrupación reactiva local limpia (eliminada cualquier duplicidad externa)
+            const gastosAgrupadosPorDia = {};
+            
+            listaFiltrada.forEach(gasto => {
+                // Código defensivo frente a elementos corruptos o antiguos en localStorage
+                if (!gasto || typeof gasto !== 'object') return;
+                
+                const diaSeguro = gasto.dia || 1;
+                if (!gastosAgrupadosPorDia[diaSeguro]) {
+                    gastosAgrupadosPorDia[diaSeguro] = [];
+                }
+                gastosAgrupadosPorDia[diaSeguro].push(gasto);
+            });
+
+            const fragment = document.createDocumentFragment();
+
+            // Ordenamos los días en orden descendente (el día más reciente arriba)
+            Object.keys(gastosAgrupadosPorDia).sort((a, b) => b - a).forEach(dia => {
+                const gastosDelDia = gastosAgrupadosPorDia[dia];
+
+                // Cálculo defensivo del subtotal por día
+                let subtotalDiaEUR = gastosDelDia.reduce((sum, g) => {
+                    const precio = parseFloat(g.precio) || 0;
+                    return sum + (g.moneda === 'EUR' ? precio : precio / tasaCambio);
+                }, 0);
+
+                // Bloque contenedor del día
+                const dayBlock = document.createElement('div');
+                dayBlock.className = "day-expense-block";
+                dayBlock.style = "background: var(--card-bg, rgba(255,255,255,0.05)); padding:1rem; border-radius:12px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.02);";
+
+                // Encabezado del día
+                const header = document.createElement('div');
+                header.style = "display:flex; justify-content:space-between; margin-bottom:0.8rem; border-bottom:1px solid rgba(128,128,128,0.2); padding-bottom:4px; font-size:0.85rem; color: var(--text-color, #222);";
+                header.innerHTML = `
+                    <strong>📅 Día del viaje: ${dia}</strong>
+                    <span style="opacity:0.8;">Total día: <strong>${subtotalDiaEUR.toFixed(2)} €</strong></span>
+                `;
+                dayBlock.appendChild(header);
+
+                // Renderizado de las filas individuales del gasto
+                gastosDelDia.forEach(gasto => {
+                    // Variables seguras para evitar textos rotos, undefined o NaN
+                    const conceptoSeguro = gasto.concepto || "Gasto sin concepto";
+                    const precioSeguro = parseFloat(gasto.precio) || 0;
+                    const categoriaSegura = gasto.categoria || "❓ Gasto";
+                    const monedaSegura = gasto.moneda === 'EUR' ? '€' : 'PLN';
+
+                    const item = document.createElement('div');
+                    item.className = "expense-item";
+                    item.dataset.id = gasto.id;
+                    // Eliminados los colores blancos fijos (#fff) para que hereden el color oscuro del texto de la app o usen un tono neutro visible
+                    item.style = "display:flex; justify-content:space-between; align-items:center; background: rgba(0,0,0,0.03); padding:0.6rem 0.8rem; border-radius:8px; margin-bottom:0.5rem; font-size:0.9rem; border-left: 3px solid var(--primary-color, #ffa502); color: var(--text-color, #222);";
+
+                    const left = document.createElement('div');
+                    left.innerHTML = `
+                        <span style="font-size:0.7rem; background: rgba(128,128,128,0.15); padding:2px 6px; border-radius:4px; margin-right:6px; font-weight:500;">${categoriaSegura}</span>
+                        <strong style="color: inherit;">${conceptoSeguro}</strong>
+                    `;
+
+                    const right = document.createElement('div');
+                    right.style = "display:flex; align-items:center; gap:8px;";
+
+                    const amount = document.createElement('span');
+                    amount.style = "font-weight:bold; color: inherit;";
+                    amount.textContent = `${precioSeguro.toFixed(2)} ${monedaSegura}`;
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = "✕";
+                    deleteBtn.style = "background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.9rem; padding:4px; font-weight:bold;";
+
+
+                    right.appendChild(amount);
+                    right.appendChild(deleteBtn);
+                    item.appendChild(left);
+                    item.appendChild(right);
+                    dayBlock.appendChild(item);
+                });
+
+                fragment.appendChild(dayBlock);
+            });
+
+            expensesContainer.appendChild(fragment);
+        }
 
         // Añadir manejadores de evento para borrar
         document.querySelectorAll('.delete-exp-btn').forEach(btn => {
@@ -585,6 +749,8 @@ function initConversor() {
                 actualizarPantallaFinanzas();
             });
         });
+
+        renderListaGastos();
     }
 
 
@@ -616,7 +782,7 @@ function initConversor() {
             // Opcional: Reiniciar al chip por defecto de comida tras guardar
             chips.forEach(c => c.classList.remove('active'));
             if(chips[0]) chips[0].classList.add('active');
-            categoriaSeleccionada = "🍕 Comida";
+            categoriaSeleccionada = "🍔 Comida";
 
             actualizarPantallaFinanzas();
         });
@@ -656,6 +822,19 @@ function initConversor() {
     // Dibujar la pantalla por primera vez al entrar
     actualizarPantallaFinanzas();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function initChecklist() {
     const container = document.getElementById('checklist-dynamic-container');

@@ -50,7 +50,9 @@ body {
     font-weight: bold;
 }
 
-/* Sistema de enrutado básico SPA */
+/****************************************************************************************************************************************
+                                                        PESTAÑA 2: MAPA
+****************************************************************************************************************************************/
 .view {
     display: none;
     padding: 1rem;
@@ -59,7 +61,7 @@ body {
 
 #tab-map {
     padding: 0; 
-    height: calc(100vh - 110px); /* Ajustado restando cabecera y navegación */
+    height: calc(100dvh - var(--header-height, 50px) - 60px);
     width: 100vw;
     overflow: hidden;
 }
@@ -104,6 +106,7 @@ body {
     opacity: 0.5;         /* Los botones apagados se verán semitransparentes muy finos */
     cursor: pointer;
     transition: opacity 0.2s ease, color 0.2s ease;
+    min-height: 48px;
 }
 
 .nav-btn.active {
@@ -116,13 +119,21 @@ body {
     width: 100%;
     height: 100%;
     flex-grow: 1;
+    pointer-events: none;
 }
 
 .map-wrapper iframe {
     width: 100%;
     height: 100%;
     display: block;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
+
+.map-wrapper.active iframe {
+    pointer-events: auto;
+}
+
 
 
 /******************************************************************************************************************************
@@ -486,9 +497,9 @@ body {
     color: var(--text-color);
     border: 1px solid rgba(0,0,0,0.1);
     padding: 0.5rem 4px;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    border-radius: 20px;
+    border-radius: 10px;
     cursor: pointer;
     white-space: nowrap; /* Evita que el texto salte de línea */
     text-align: center;
@@ -771,7 +782,8 @@ body {
     background: var(--card-bg);
     border-radius: 16px;
     padding: 1.2rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    -shadow-soft: 0 2px 6px rgba(0,0,0,0.05);
+    --shadow-medium: 0 4px 10px rgba(0,0,0,0.08);
     margin-bottom: 1.5rem;
     box-sizing: border-box;
     width: 100%;
@@ -796,6 +808,7 @@ body {
 
 /* Tarjetas individuales internas (Convertidas en celdas limpias sin doble fondo) */
 .flight-summary-card {
+    min-height: 110px;
     background: var(--bg-color); /* Usa el fondo general grisáceo suave para contrastar */
     border-radius: 12px;
     padding: 1rem;
@@ -807,7 +820,7 @@ body {
 }
 
 .flight-summary-card:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
 }
 
 .flight-card-badge {
@@ -940,4 +953,25 @@ body {
 
 .modal-flight-image-placeholder.return {
     background: linear-gradient(135deg, #d97706 0%, #78350f 100%);
+}
+
+
+
+/*******************************************************************************
+ 6.2 AJUSTES EXCLUSIVOS DE LA CABECERA DE HOTELES
+*******************************************************************************/
+
+/* Fila elástica que empuja el check-in a la izquierda y el check-out a la derecha */
+.hotel-card-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+/* Color distintivo para la etiqueta de salida (Check-out) */
+.flight-card-badge.checkout {
+    background: rgba(148, 163, 184, 0.15) !important; /* Gris pizarra suave */
+    color: #64748b !important;
 }
