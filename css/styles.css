@@ -382,9 +382,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin: 1.5rem 0;
+    margin: 1.7rem 0;
+    padding: 1rem 0.5rem;
     width: 100%;
     box-sizing: border-box;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Contenedor de la barra (Riel base que ahora es oscuro/gris para contrastar en la app) */
@@ -409,10 +413,11 @@ body {
 /* Elementos individuales de la leyenda (Actualizado el color de texto a var(--text-color)) */
 .legend-item {
     font-size: 0.7rem;
-    color: var(--text-color); /* Hereda tu color de texto principal, adaptándose a modo claro/oscuro */
+    color: #ffffff !important;
     display: flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    gap: 3px;
     font-weight: 600;
     opacity: 0.8;
 }
