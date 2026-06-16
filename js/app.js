@@ -356,68 +356,6 @@ function renderItinerario() {
 }
 
 
-
-/**************************************************************************************************************************************
-                                                    Pestaña 2: MAPA
-**************************************************************************************************************************************/
-/* SISTEMA ENRUTADOR PRINCIPAL (Pestañas del Menú Inferior) */
-function initNavigation() {
-    const buttons = document.querySelectorAll('.nav-btn');
-    const views = document.querySelectorAll('.view');
-
-    buttons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const currentBtn = e.currentTarget;
-            const target = currentBtn.getAttribute('data-target');
-
-            buttons.forEach(b => b.classList.remove('active'));
-            currentBtn.classList.add('active');
-
-            views.forEach(view => {
-                if (view.id === target) {
-                    view.classList.add('active');
-                    // ... tu lógica anterior de carga diferida del iframe
-                } else {
-                    view.classList.remove('active');
-                    // Si salimos de la pestaña del mapa, aseguramos que se bloquee de nuevo
-                    if (view.id === 'tab-map' && mapWrapper) {
-                        mapWrapper.classList.remove('active');
-                    }
-                }
-            });
-            
-            window.scrollTo(0, 0);
-        });
-    });
-}
-
-// =========================================================================
-// MEJORA TÁCTIL: CONTROL DE INTERACCIÓN DEL MAPA
-// =========================================================================
-const mapWrapper = document.querySelector('.map-wrapper');
-
-if (mapWrapper) {
-    // Activa el mapa al hacer clic o pulsar sobre él
-    mapWrapper.addEventListener('click', (e) => {
-        e.stopPropagation(); // Evita que el clic se propague al documento inmediatamente
-        mapWrapper.classList.add('active');
-    });
-
-    // Desactiva el mapa si el usuario toca en cualquier otro lugar de la pantalla
-    document.addEventListener('click', (e) => {
-        if (!mapWrapper.contains(e.target)) {
-            mapWrapper.classList.remove('active');
-        }
-    });
-
-    // Soporte extra para pantallas táctiles (desactivar al iniciar scroll general)
-    document.addEventListener('touchstart', (e) => {
-        if (!mapWrapper.contains(e.target)) {
-            mapWrapper.classList.remove('active');
-        }
-    }, { passive: true });
-}
-
 /**************************************************************************************************************************************
                                                     Pestaña 3: CONVERSOR Y GASTOS
 **************************************************************************************************************************************/
