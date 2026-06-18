@@ -2,9 +2,10 @@
  CONFIGURACIÓN GENERAL DE LA PESTAÑA INFO
 *******************************************************************************************************************************/
 #tab-itinerary { 
-    height: auto;       /* ✅ quitar el cálculo */
-    min-height: 100dvh; /* ✅ altura completa */
-    overflow-y: auto;
+    padding: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+    height: calc(100dvh - 110px); 
 }
 
 .app-content{

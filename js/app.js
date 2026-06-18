@@ -1060,7 +1060,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const appHeader = document.querySelector(".app-header"); // Buscamos tu nueva cabecera
 
     if (magazineHero && magicContent && tabItinerary && appHeader) {
-        
+
         function activarItinerario() {
             magazineHero.style.opacity = "0";
             magazineHero.style.visibility = "hidden";
@@ -1084,9 +1084,18 @@ document.addEventListener("DOMContentLoaded", () => {
             appHeader.classList.remove("show-header");
             
             document.body.classList.add("no-scroll");
-            tabItinerary.style.overflow = "hidden";
             window.scrollTo(0, 0);
         }
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 30 && magazineHero.style.opacity !== "0") {
+                activarItinerario();
+            }
+
+            if (window.scrollY <= 0 && magazineHero.style.opacity === "0") {
+                desactivarItinerario();
+            }
+        });
 
         let touchStartY = 0;
         window.addEventListener("touchstart", (event) => {
