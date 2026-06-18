@@ -1117,17 +1117,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!tabItinerary.classList.contains("active")) return;
 
-            // ✅ SOLO bloqueamos si estamos en portada
+            const currentY = event.touches[0].clientY;
+            pullDistance = currentY - touchStartY;
+
             const enPortada = !magicContent.classList.contains("fade-in-visible");
 
-            if (enPortada && window.scrollY <= 0) {
-                event.preventDefault(); // 🚫 BLOQUEA EL PULL-TO-REFRESH
+            // ✅ SOLO bloquear si realmente estás haciendo PULL hacia abajo en top
+            if (enPortada && window.scrollY <= 0 && pullDistance > 0) {
+                event.preventDefault();
+                isPulling = true;
             }
 
             if (!isPulling) return;
-
-            const currentY = event.touches[0].clientY;
-            pullDistance = currentY - touchStartY;
 
             if (pullDistance > 0) {
                 const resistance = pullDistance * 0.4;
