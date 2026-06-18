@@ -1073,6 +1073,8 @@ document.addEventListener("DOMContentLoaded", () => {
             appHeader.classList.add("show-header");
 
             tabItinerary.style.overflow = "auto";
+
+            window.scrollTo({ top: 0, behavior: "auto" });
         }
 
         function desactivarItinerario() {
