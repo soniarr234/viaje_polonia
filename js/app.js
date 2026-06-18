@@ -1114,25 +1114,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         window.addEventListener("touchmove", (event) => {
-            
+
             if (!tabItinerary.classList.contains("active")) return;
+
+            // ✅ SOLO bloqueamos si estamos en portada
+            const enPortada = !magicContent.classList.contains("fade-in-visible");
+
+            if (enPortada && window.scrollY <= 0) {
+                event.preventDefault(); // 🚫 BLOQUEA EL PULL-TO-REFRESH
+            }
+
             if (!isPulling) return;
 
             const currentY = event.touches[0].clientY;
             pullDistance = currentY - touchStartY;
 
-            // Solo si tira hacia abajo
             if (pullDistance > 0) {
-
-                // ✅ Aplicamos resistencia (efecto natural)
                 const resistance = pullDistance * 0.4;
 
                 magazineHero.style.transform = `scale(${1 + resistance / 1000})`;
                 magazineHero.style.opacity = `${Math.min(1, 0.5 + resistance / 150)}`;
-
             }
 
-        }, { passive: true });
+        }, { passive: false });
 
                 
         window.addEventListener("touchend", () => {
