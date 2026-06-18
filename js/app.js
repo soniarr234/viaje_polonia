@@ -1074,7 +1074,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             tabItinerary.style.overflow = "auto";
 
-            window.scrollTo({ top: 0, behavior: "auto" });
+            requestAnimationFrame(() => {
+                window.scrollTo(0, 0);
+            });
         }
 
         function desactivarItinerario() {
