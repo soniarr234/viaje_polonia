@@ -107,3 +107,8 @@ body:has(#tab-docs.active) #tab-docs {
 .view.active {
     display: block;
 }
+
+
+.no-scroll {
+    overflow: hidden;
+}

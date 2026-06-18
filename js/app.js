@@ -1061,9 +1061,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (magazineHero && magicContent && tabItinerary && appHeader) {
         
-        document.body.style.overflow = "hidden";
-        tabItinerary.style.overflow = "hidden";
-
         function activarItinerario() {
             magazineHero.style.opacity = "0";
             magazineHero.style.visibility = "hidden";
@@ -1086,7 +1083,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // MÁGICO: Escondemos de nuevo la cabecera al regresar al póster de la revista
             appHeader.classList.remove("show-header");
             
-            document.body.style.overflow = "hidden";
+            document.body.classList.add("no-scroll");
             tabItinerary.style.overflow = "hidden";
             window.scrollTo(0, 0);
         }
