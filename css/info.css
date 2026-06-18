@@ -1,7 +1,7 @@
 /*******************************************************************************************************************************
  CONFIGURACIÓN GENERAL DE LA PESTAÑA INFO
 *******************************************************************************************************************************/
-#tab-itinerary { 
+#tab-itinerary {
     padding: 0 !important;
     width: 100%;
     box-sizing: border-box;
@@ -130,7 +130,7 @@
  CONTENEDOR DE CONTENIDO PRINCIPAL (SUB-VISTAS)
 *******************************************************************************************************************************/
 #magic-scroll-content {
-    position: relative; 
+    position: absolute; 
     top: 0;
     left: 0;
     right: 0;
