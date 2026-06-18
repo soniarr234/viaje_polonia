@@ -1,0 +1,29 @@
+/****************************************************************************************************************************************
+                                                        PESTAÑA 2: MAPA
+****************************************************************************************************************************************/
+/* Contenedor de la pestaña */
+#tab-map {
+    padding: 0; 
+    height: calc(100dvh - var(--header-height, 50px) - 60px);
+    width: 100vw;
+    overflow: hidden;
+}
+#tab-map.view.active {
+    display: flex;
+    flex-direction: column;
+}
+/* Mapa */
+.map-wrapper {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+}
+.map-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transition: opacity 0.3s ease;
+}
+.map-wrapper.active iframe {
+    pointer-events: auto;
+}

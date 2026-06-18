@@ -1,0 +1,402 @@
+/*******************************************************************************************************************************
+ CONFIGURACIÓN GENERAL DE LA PESTAÑA INFO
+*******************************************************************************************************************************/
+#tab-itinerary {
+    padding: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+    height: calc(100dvh - 110px); 
+}
+
+.app-content{
+    flex-grow: 1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/*******************************************************************************************************************************
+ PORTADA PRINCIPAL (HERO)
+*******************************************************************************************************************************/
+.magazine-hero {
+    position: fixed; 
+    top: 0;       
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 60px); 
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    z-index: 10; 
+    transition: opacity 0.85s cubic-bezier(0.25, 1, 0.5, 1), 
+                transform 0.85s cubic-bezier(0.25, 1, 0.5, 1), 
+                visibility 0.85s; 
+}
+.magazine-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 0.85) 100%), 
+                url('https://res.cloudinary.com/dkicsjbbb/image/upload/v1781771217/file_000000008b787243af3f1a33b601a4f1_hdyblq.png'); 
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+.magazine-body {
+    position: relative;
+    z-index: 2;
+    display:
+    flex;
+    flex-direction: column;
+    margin-top: auto;
+    gap: 12px;
+}
+.magazine-header-meta {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #94a3b8;
+    display: flex;
+    align-items:center;
+    gap: 8px;
+}
+.magazine-divider {
+    opacity: 0.3;
+}
+.magazine-main-title {
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+.magazine-main-title .highlight-gold {
+    color: #fbbf24;
+}
+.magazine-countdown-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 12px;
+}
+.mag-days {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 0.9;
+    letter-spacing: -1px;
+}
+.mag-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.2;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+}
+.magazine-scroll-indicator {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 1rem;
+    opacity: 0.5;
+}
+.magazine-scroll-indicator span {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ffffff; }
+.indicator-dot {
+    width: 4px;
+    height: 4px;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+/*******************************************************************************************************************************
+ CONTENEDOR DE CONTENIDO PRINCIPAL (SUB-VISTAS)
+*******************************************************************************************************************************/
+#magic-scroll-content {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 1; 
+}
+
+/*******************************************************************************************************************************
+ ESTADOS COMPORTAMIENTO ANIMACIÓN CROSS-FADE DE ITINERARIO
+*******************************************************************************************************************************/
+.fade-in-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.85s cubic-bezier(0.25, 1, 0.5, 1), 
+                transform 0.85s cubic-bezier(0.25, 1, 0.5, 1), 
+                visibility 0.85s;
+}
+.fade-in-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    z-index: 20 !important; 
+}
+
+/*******************************************************************************
+ MENÚ DE SUB-NAVEGACIÓN INTERNO (BOTONES: VUELOS, HOTELES, CIUDADES)
+*******************************************************************************/
+.sub-nav-container {
+    display: flex;
+    background: var(--card-bg);
+    padding: 6px;
+    border-radius: 12px;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    width: 100%;
+    box-sizing: border-box;
+}
+.sub-nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none; /* Elimina la línea de foco */
+    padding: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 8px;
+    opacity: 0.6;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+.sub-nav-btn.active {
+    background-color: #0284c7 !important; 
+    color: #ffffff !important;
+    opacity: 1;
+}
+
+/*************************************************************************************************************************
+                                            SUB-VISTA A: DETALLES DE VUELOS
+*************************************************************************************************************************/
+.sub-view {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sub-view.active {
+    display: block;
+}
+
+/*******************************************************************************
+ ESTRUCTURA DE LA SUPERTARJETA CONTENEDORA GLOBAL
+*******************************************************************************/
+/* La supertarjeta contenedora principal */
+.super-container-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.2rem;
+    -shadow-soft: 0 2px 6px rgba(0,0,0,0.05);
+    --shadow-medium: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+/* Encabezado h2 interno de la supertarjeta */
+.super-card-title {
+    margin: 0 0 1.2rem 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+/* Bloque vertical que apila los dos vuelos por dentro */
+.flights-inner-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+/*******************************************************************************
+ DISEÑO DE TARJETAS
+*******************************************************************************/
+.flight-summary-card {
+    min-height: 110px;
+    background: var(--bg-color);
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 100%;
+    transition: transform 0.1s ease;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.flight-summary-card:active {
+    transform: scale(0.97);
+}
+.flight-summary-card h3 {
+    margin: 0 0 0.6rem 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    opacity: 0.7; /* Suavizado para que resalte la información numérica de abajo */
+    color: var(--text-color);
+}
+.flight-card-footer {
+    font-size: 0.7rem;
+    opacity: 0.5;
+    text-align: right;
+    font-weight: 500;
+    margin-top: 15px;
+}
+/*DISEÑO DE ETIQUETAS E ICONOS IDENTIFICATIVOS (BADGES)*/
+.flight-card-badge {
+    display: inline-block;
+    background: rgba(2, 132, 199, 0.1);
+    color: #0284c7;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+.flight-card-badge.return {
+    background: rgba(217, 119, 6, 0.1);
+    color: #d97706;
+}
+/*CUADRÍCULA ELÁSTICA INTERNA DE DATOS BREVES*/
+.flight-brief-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 8px;
+    margin-bottom: 6px;
+}
+.brief-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.brief-item span {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    font-weight: 600;
+}
+.brief-item strong {
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+
+/********************************************************************************
+   ESTILOS PARA LAS VENTANAS EMERGENTES (POPUP MODALS)
+ ********************************************************************************/
+/* Fondo oscuro transparente que cubre toda la aplicación web */
+.flight-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100dvh; /* Altura dinámica real de la pantalla del móvil */
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* Cambiamos el alineamiento: flex-start empuja la caja blanca hacia ARRIBA */
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    
+    /* Subimos el peso de la capa al máximo para tragar por completo la barra inferior */
+    z-index: 99999; 
+    opacity: 0;
+    pointer-events: none;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    transition: opacity 0.4s ease;
+}
+/* Clase inyectada por JS para activar el Popup */
+.flight-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+    margin-top: -50px;
+}
+/* Caja interior blanca flotante del popup */
+.flight-modal-content {
+    background: var(--bg-color);
+    width: 100%;
+    max-width: 360px;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    position: relative;
+    box-sizing: border-box;
+    
+    /* Efecto premium: la tarjeta nace cayendo suavemente desde arriba */
+    transform: translateY(-20px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.flight-modal.open .flight-modal-content {
+    transform: translateY(0) scale(1);
+}
+/* Botón de la cruz superior derecha de cierre */
+.close-modal-btn {
+    position: absolute;
+    right: 18px;
+    top: 16px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #ef4444;
+    font-weight: bold;
+    padding: 4px;
+    transition: opacity 0.2s ease;
+}
+.close-modal-btn:active {
+    opacity: 0.5;
+}
+.expense-form {
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+}
+/* Contenedor estético con degradado que aloja la foto o icono del avión */
+.modal-flight-image-placeholder {
+    width: 100%;
+    height: 120px;
+    border-radius: 14px;
+    margin: 0.8rem 0 1.2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+}
+.modal-flight-image-placeholder.going {
+    background: linear-gradient(135deg, #0284c7 0%, #0c4a6e 100%);
+}
+.modal-flight-image-placeholder.return {
+    background: linear-gradient(135deg, #d97706 0%, #78350f 100%);
+}

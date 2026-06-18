@@ -1049,3 +1049,74 @@ function initCountdown() {
     actualizarContador();
     setInterval(actualizarContador, 60000);
 }
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const magazineHero = document.querySelector(".magazine-hero");
+    const magicContent = document.getElementById("magic-scroll-content");
+    const tabItinerary = document.getElementById("tab-itinerary");
+    const appHeader = document.querySelector(".app-header"); // Buscamos tu nueva cabecera
+
+    if (magazineHero && magicContent && tabItinerary && appHeader) {
+        
+        document.body.style.overflow = "hidden";
+        tabItinerary.style.overflow = "hidden";
+
+        function activarItinerario() {
+            magazineHero.style.opacity = "0";
+            magazineHero.style.visibility = "hidden";
+            magazineHero.style.transform = "scale(0.95)";
+            magicContent.classList.add("fade-in-visible");
+            
+            // MÁGICO: Hacemos aparecer la cabecera arriba de los botones de vuelos/hoteles
+            appHeader.classList.add("show-header");
+            
+            document.body.style.overflow = "auto";
+            tabItinerary.style.overflow = "auto";
+        }
+
+        function desactivarItinerario() {
+            magazineHero.style.opacity = "1";
+            magazineHero.style.visibility = "visible";
+            magazineHero.style.transform = "scale(1)";
+            magicContent.classList.remove("fade-in-visible");
+            
+            // MÁGICO: Escondemos de nuevo la cabecera al regresar al póster de la revista
+            appHeader.classList.remove("show-header");
+            
+            document.body.style.overflow = "hidden";
+            tabItinerary.style.overflow = "hidden";
+            window.scrollTo(0, 0);
+        }
+
+        let touchStartY = 0;
+        window.addEventListener("touchstart", (event) => {
+            touchStartY = event.touches.clientY;
+        }, { passive: true });
+
+        window.addEventListener("touchmove", (event) => {
+            const touchEndY = event.touches.clientY;
+            const diffY = touchStartY - touchEndY;
+
+            if (diffY > 25 && magazineHero.style.opacity !== "0") {
+                activarItinerario();
+            }
+            
+            if (diffY < -25 && window.scrollY <= 5 && magazineHero.style.opacity === "0") {
+                desactivarItinerario();
+            }
+        }, { passive: true });
+
+        window.addEventListener("wheel", (event) => {
+            if (event.deltaY > 0 && magazineHero.style.opacity !== "0") {
+                activarItinerario();
+            }
+            if (event.deltaY < 0 && window.scrollY <= 5 && magazineHero.style.opacity === "0") {
+                desactivarItinerario();
+            }
+        });
+    }
+});
+

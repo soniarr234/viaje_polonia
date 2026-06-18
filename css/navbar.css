@@ -1,0 +1,42 @@
+/***********************************************************************************************************************************
+                                                    NAVBAR INFERIOR (Estilo App Móvil)
+************************************************************************************************************************************/
+/* Contenedor principal de la barra de navegación */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--nav-bg);
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.nav-btn * {
+    pointer-events: none;
+}
+
+/* Botón individual del menú (Info, Mapa, Dinero, Maleta) */
+.nav-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    gap: 4px;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    min-height: 48px;
+}
+.nav-btn.active {
+    color: var(--primary-color);
+    opacity: 1;
+    font-weight: 600;
+}

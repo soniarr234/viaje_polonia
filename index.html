@@ -5,327 +5,369 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Viaje a Polonia</title>
         <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/info.css">
+        <link rel="stylesheet" href="css/maps.css">
+        <link rel="stylesheet" href="css/finances.css">
+        <link rel="stylesheet" href="css/suitcase.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <!--**********************************************************************************************************************************-->
-        <!--                                        CABECERA: (Cuenta atrás) -->
-        <!--**********************************************************************************************************************************-->
-        <header class="app-header">
-            <h1>Polonia en Navidad</h1>
-            <div id="countdown" class="badge"></div>
+        <!--**********************************************************************************************************************************
+                                                        CABECERA: (Cuenta atrás)
+        ***********************************************************************************************************************************-->
+        <header class="app-header header-transparent">
+            <h1 class="header-logo">Polonia en <span>Navidad</span></h1>
         </header>
-
+        <!--**********************************************************************************************************************************
+                                                    CONTENIDO PRINCIPAL DE TODA LA PAGINA
+        ***********************************************************************************************************************************-->
         <main class="app-content">
             <!--**********************************************************************************************************************************-->
             <!--                                                PESTAÑA 1 (Info)                                                                  -->
             <!--**********************************************************************************************************************************-->
+            
+            <!-- PORTADA PRINCIPAL (HERO) -->
             <section id="tab-itinerary" class="view active">
                 
-                <!-- SUB-NAV SUPERIOR (Filtros internos de la ruta) -->
-                <div class="sub-nav-container">
-                    <button class="sub-nav-btn active" data-sub="sub-vuelos">✈️ Vuelos</button>
-                    <button class="sub-nav-btn" data-sub="sub-hoteles">🏨 Hoteles</button>
-                    <button class="sub-nav-btn" data-sub="sub-ciudades">🏙️ Ciudades</button>
+                <!-- PORTADA COMPLETA -->
+                <div class="magazine-hero">
+                    <div class="magazine-bg-image"></div>
+                    <div class="magazine-body">
+                        <div class="magazine-header-meta">
+                            <span>WINTER EDITION</span>
+                            <span class="magazine-divider">|</span>
+                            <span>POLONIA 2026</span>
+                        </div>
+                        <h2 class="magazine-main-title">Polonia en <br><span class="highlight-gold">Navidad</span></h2>
+                        <div class="magazine-countdown-row">
+                            <span class="mag-days" id="magazine-days-val">169</span>
+                            <span class="mag-text">días para <br>comenzar</span>
+                        </div>
+                    </div>
+                    <div class="magazine-scroll-indicator">
+                        <span>Desliza para ver itinerario</span>
+                        <div class="indicator-dot"></div>
+                    </div>
                 </div>
-
-                <!-- SUB-VISTA A: VUELOS -->
-                <div id="sub-vuelos" class="sub-view active">
+                
+                <!-- CONTENEDOR DE CONTENIDO (SUB-VISTAS) -->
+                <div id="magic-scroll-content" class="fade-in-hidden">
                     
-                    <!-- SUPERTARJETA CONTENEDORA GLOBAL -->
-                    <div class="super-container-card">
-                        <!-- Título principal de la sección -->
-                        <h2 class="super-card-title">✈️ Itinerario de Vuelos</h2>
+                    <!-- SUB-NAV SUPERIOR (Aparecerá arriba del todo) -->
+                    <div class="sub-nav-container">
+                        <button class="sub-nav-btn active" data-sub="sub-vuelos">✈️ Vuelos</button>
+                        <button class="sub-nav-btn" data-sub="sub-hoteles">🏨 Hoteles</button>
+                        <button class="sub-nav-btn" data-sub="sub-ciudades">🏙️ Ciudades</button>
+                    </div>
+
+                    <!-- SUB-VISTA A: VUELOS -->
+                    <div id="sub-vuelos" class="sub-view active">
                         
-                        <!-- Contenedor interno de los vuelos independientes -->
-                        <div class="flights-inner-group">
+                        <!-- SUPERTARJETA CONTENEDORA GLOBAL -->
+                        <div class="super-container-card">
+                            <!-- Título principal de la sección -->
+                            <h2 class="super-card-title">✈️ Itinerario de Vuelos</h2>
                             
-                            <!-- TARJETA 1: VUELO DE IDA -->
-                            <div class="flight-summary-card" id="card-going">
-                                <div class="flight-card-badge">🛫 VUELO DE IDA</div>
-                                <h3>Datos de tus vuelos</h3>
+                            <!-- Contenedor interno de los vuelos independientes -->
+                            <div class="flights-inner-group">
+                                
+                                <!-- TARJETA 1: VUELO DE IDA -->
+                                <div class="flight-summary-card" id="card-going">
+                                    <div class="flight-card-badge">🛫 VUELO DE IDA</div>
+                                    <h3>Datos de tus vuelos</h3>
+                                    <div class="flight-brief-grid">
+                                        <div class="brief-item"><span>Compañía</span><strong id="brief-going-airline">Ryanair</strong></div>
+                                        <div class="brief-item"><span>Terminal</span><strong id="brief-going-terminal">T1</strong></div>
+                                        <div class="brief-item"><span>Hora</span><strong id="brief-going-time">06:35h</strong></div>
+                                    </div>
+                                    <div class="flight-card-footer">Pulsa para ver detalles o editar</div>
+                                </div>
+
+                                <!-- TARJETA 2: VUELO DE VUELTA -->
+                                <div class="flight-summary-card" id="card-return">
+                                    <div class="flight-card-badge return">🛬 VUELO DE VUELTA</div>
+                                    <h3>Datos de tus vuelos</h3>
+                                    <div class="flight-brief-grid">
+                                        <div class="brief-item"><span>Compañía</span><strong id="brief-return-airline">Wizz Air</strong></div>
+                                        <div class="brief-item"><span>Terminal</span><strong id="brief-return-terminal">T2</strong></div>
+                                        <div class="brief-item"><span>Hora</span><strong id="brief-return-time">21:40h</strong></div>
+                                    </div>
+                                    <div class="flight-card-footer">👁️ Pulsa para ver detalles o editar</div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- POPUP 1: MODAL VUELO DE IDA  -->
+                        <div id="modal-flight-going" class="flight-modal">
+                            <div class="flight-modal-content">
+                                <span class="close-modal-btn" data-modal="modal-flight-going">✕</span>
+                                <h3>⚙️ Configurar Vuelo de Ida</h3>
+                                
+                                <div class="modal-flight-image-placeholder going">🛫</div>
+                                
+                                <div class="expense-form">
+                                    <!-- Fila 1: Compañía y Horario Rango -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>✈️ Compañía Aérea</label>
+                                            <input type="text" id="edit-going-airline" placeholder="Ej: Ryanair">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>⏰ Horario</label>
+                                            <input type="text" id="edit-going-time" placeholder="Ej: 6:30 - 14:15">
+                                        </div>
+                                    </div>
+                                    <!-- Fila 2: Terminal y Localizador -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>🚪 Terminal de Embarque</label>
+                                            <input type="text" id="edit-going-terminal" placeholder="Ej: T1">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>💺 Número de Asiento</label>
+                                            <input type="text" id="edit-going-seat" placeholder="Ej: 14C">
+                                        </div>
+                                    </div>
+                                    <button id="save-going-btn" class="submit-expense-btn">💾 Guardar Vuelo Ida</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- POPUP 2: MODAL VUELO DE VUELTA -->
+                        <div id="modal-flight-return" class="flight-modal">
+                            <div class="flight-modal-content">
+                                <span class="close-modal-btn" data-modal="modal-flight-return">✕</span>
+                                <h3>⚙️ Configurar Vuelo de Vuelta</h3>
+                                
+                                <div class="modal-flight-image-placeholder return">🛬</div>
+                                
+                                <div class="expense-form">
+                                    <!-- Fila 1: Compañía y Horario Rango -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>✈️ Compañía Aérea</label>
+                                            <input type="text" id="edit-return-airline" placeholder="Ej: Ryanair">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>⏰ Horario</label>
+                                            <input type="text" id="edit-return-time" placeholder="Ej: 6:30 - 14:15">
+                                        </div>
+                                    </div>
+                                    <!-- Fila 2: Terminal y Localizador -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>🚪 Terminal de Embarque</label>
+                                            <input type="text" id="edit-return-terminal" placeholder="Ej: T1">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>💺 Número de Asiento</label>
+                                            <input type="text" id="edit-return-seat" placeholder="Ej: 14C">
+                                        </div>
+                                    </div>
+                                    <button id="save-going-btn" class="submit-expense-btn">💾 Guardar Vuelo Ida</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-VISTA B: HOTELES -->
+                    <div id="sub-hoteles" class="sub-view">
+                        
+                        <!-- SUPERTARJETA 1: CRACOVIA -->
+                        <div class="super-container-card">
+                            <h2 class="super-card-title"> Alojamiento en Cracovia</h2>
+                            <div class="flight-summary-card" id="card-hotel-krk">
+
+                                <div class="hotel-card-badge-row">
+                                    <div class="flight-card-badge">🔑 CHECK-IN: <span id="brief-krk-checkin">14:00h</span></div>
+                                    <div class="flight-card-badge checkout">🚪 CHECK-OUT: <span id="brief-krk-checkout">11:00h</span></div>
+                                </div>
+
+                                <h3 id="brief-krk-name" style="opacity:1; font-size:1.1rem; margin: 4px 0;">Atlantis Hostel</h3>
+                                <p id="brief-krk-address" style="margin:0 0 8px 0; font-size:0.85rem; opacity:0.7;">Westerplatte 16, Old Town</p>
+                                
                                 <div class="flight-brief-grid">
-                                    <div class="brief-item"><span>Compañía</span><strong id="brief-going-airline">Ryanair</strong></div>
-                                    <div class="brief-item"><span>Terminal</span><strong id="brief-going-terminal">T1</strong></div>
-                                    <div class="brief-item"><span>Hora</span><strong id="brief-going-time">06:35h</strong></div>
+                                    <div class="brief-item"><span>Precio Total</span><strong id="brief-krk-price">80 €</strong></div>
+                                    <div class="brief-item"><span>Estado de Pago</span><strong id="brief-krk-status" style="color:#2ed573;">Pagado</strong></div>
                                 </div>
-                                <div class="flight-card-footer">Pulsa para ver detalles o editar</div>
+                                <div class="flight-card-footer">Pulsa para detalles o editar</div>
                             </div>
+                        </div>
 
-                            <!-- TARJETA 2: VUELO DE VUELTA -->
-                            <div class="flight-summary-card" id="card-return">
-                                <div class="flight-card-badge return">🛬 VUELO DE VUELTA</div>
-                                <h3>Datos de tus vuelos</h3>
+                        <!-- SUPERTARJETA 2: BRESLAVIA -->
+                        <div class="super-container-card">
+                            <h2 class="super-card-title"> Alojamiento en Breslavia (Wrocław)</h2>
+                            <div class="flight-summary-card" id="card-hotel-wro">
+
+                                <div class="hotel-card-badge-row">
+                                    <div class="flight-card-badge">🔑 CHECK-IN: <span id="brief-wro-checkin">15:00h</span></div>
+                                    <div class="flight-card-badge checkout">🚪 CHECK-OUT: <span id="brief-wro-checkout">10:00h</span></div>
+                                </div>
+
+                                <h3 id="brief-wro-name" style="opacity:1; font-size:1.1rem; margin: 4px 0;">Korona Hotel</h3>
+                                <p id="brief-wro-address" style="margin:0 0 8px 0; font-size:0.85rem; opacity:0.7;">Rynek 29, Casco Antiguo</p>
+                                
                                 <div class="flight-brief-grid">
-                                    <div class="brief-item"><span>Compañía</span><strong id="brief-return-airline">Wizz Air</strong></div>
-                                    <div class="brief-item"><span>Terminal</span><strong id="brief-return-terminal">T2</strong></div>
-                                    <div class="brief-item"><span>Hora</span><strong id="brief-return-time">21:40h</strong></div>
+                                    <div class="brief-item"><span>Precio Total</span><strong id="brief-wro-price">340 PLN</strong></div>
+                                    <div class="brief-item"><span>Estado de Pago</span><strong id="brief-wro-status" style="color:#f59e0b;">En destino</strong></div>
                                 </div>
-                                <div class="flight-card-footer">👁️ Pulsa para ver detalles o editar</div>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <!-- POPUP 1: MODAL VUELO DE IDA  -->
-                    <div id="modal-flight-going" class="flight-modal">
-                        <div class="flight-modal-content">
-                            <span class="close-modal-btn" data-modal="modal-flight-going">✕</span>
-                            <h3>⚙️ Configurar Vuelo de Ida</h3>
-                            
-                            <div class="modal-flight-image-placeholder going">🛫</div>
-                            
-                            <div class="expense-form" style="box-shadow:none; padding:0; margin:0;">
-                                <!-- Fila 1: Compañía y Horario Rango -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>✈️ Compañía Aérea</label>
-                                        <input type="text" id="edit-going-airline" placeholder="Ej: Ryanair">
-                                    </div>
-                                    <div class="input-group">
-                                        <label>⏰ Horario</label>
-                                        <input type="text" id="edit-going-time" placeholder="Ej: 6:30 - 14:15">
-                                    </div>
-                                </div>
-                                <!-- Fila 2: Terminal y Localizador -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>🚪 Terminal de Embarque</label>
-                                        <input type="text" id="edit-going-terminal" placeholder="Ej: T1">
-                                    </div>
-                                    <div class="input-group">
-                                        <label>💺 Número de Asiento</label>
-                                        <input type="text" id="edit-going-seat" placeholder="Ej: 14C">
-                                    </div>
-                                </div>
-                                <button id="save-going-btn" class="submit-expense-btn">💾 Guardar Vuelo Ida</button>
+                                <div class="flight-card-footer">Pulsa para detalles o editar</div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- POPUP 2: MODAL VUELO DE VUELTA -->
-                    <div id="modal-flight-return" class="flight-modal">
-                        <div class="flight-modal-content">
-                            <span class="close-modal-btn" data-modal="modal-flight-return">✕</span>
-                            <h3>⚙️ Configurar Vuelo de Vuelta</h3>
-                            
-                            <div class="modal-flight-image-placeholder return">🛬</div>
-                            
-                            <div class="expense-form" style="box-shadow:none; padding:0; margin:0;">
-                                <!-- Fila 1: Compañía y Horario Rango -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>✈️ Compañía Aérea</label>
-                                        <input type="text" id="edit-return-airline" placeholder="Ej: Ryanair">
-                                    </div>
-                                    <div class="input-group">
-                                        <label>⏰ Horario</label>
-                                        <input type="text" id="edit-return-time" placeholder="Ej: 6:30 - 14:15">
-                                    </div>
-                                </div>
-                                <!-- Fila 2: Terminal y Localizador -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>🚪 Terminal de Embarque</label>
-                                        <input type="text" id="edit-return-terminal" placeholder="Ej: T1">
-                                    </div>
-                                    <div class="input-group">
-                                        <label>💺 Número de Asiento</label>
-                                        <input type="text" id="edit-return-seat" placeholder="Ej: 14C">
-                                    </div>
-                                </div>
-                                <button id="save-going-btn" class="submit-expense-btn">💾 Guardar Vuelo Ida</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- SUB-VISTA B: HOTELES (Estructurado por Ciudades con Popups) -->
-                <div id="sub-hoteles" class="sub-view">
-                    
-                    <!-- SUPERTARJETA 1: CRACOVIA -->
-                    <div class="super-container-card">
-                        <h2 class="super-card-title"> Alojamiento en Cracovia</h2>
-                        <div class="flight-summary-card" id="card-hotel-krk">
-
-                            <div class="hotel-card-badge-row">
-                                <div class="flight-card-badge">🔑 CHECK-IN: <span id="brief-krk-checkin">14:00h</span></div>
-                                <div class="flight-card-badge checkout">🚪 CHECK-OUT: <span id="brief-krk-checkout">11:00h</span></div>
-                            </div>
-
-                            <h3 id="brief-krk-name" style="opacity:1; font-size:1.1rem; margin: 4px 0;">Atlantis Hostel</h3>
-                            <p id="brief-krk-address" style="margin:0 0 8px 0; font-size:0.85rem; opacity:0.7;">Westerplatte 16, Old Town</p>
-                            
-                            <div class="flight-brief-grid">
-                                <div class="brief-item"><span>Precio Total</span><strong id="brief-krk-price">80 €</strong></div>
-                                <div class="brief-item"><span>Estado de Pago</span><strong id="brief-krk-status" style="color:#2ed573;">Pagado</strong></div>
-                            </div>
-                            <div class="flight-card-footer">Pulsa para detalles o editar</div>
-                        </div>
-                    </div>
-
-                    <!-- SUPERTARJETA 2: BRESLAVIA -->
-                    <div class="super-container-card">
-                        <h2 class="super-card-title"> Alojamiento en Breslavia (Wrocław)</h2>
-                        <div class="flight-summary-card" id="card-hotel-wro">
-
-                            <div class="hotel-card-badge-row">
-                                <div class="flight-card-badge">🔑 CHECK-IN: <span id="brief-wro-checkin">15:00h</span></div>
-                                <div class="flight-card-badge checkout">🚪 CHECK-OUT: <span id="brief-wro-checkout">10:00h</span></div>
-                            </div>
-
-                            <h3 id="brief-wro-name" style="opacity:1; font-size:1.1rem; margin: 4px 0;">Korona Hotel</h3>
-                            <p id="brief-wro-address" style="margin:0 0 8px 0; font-size:0.85rem; opacity:0.7;">Rynek 29, Casco Antiguo</p>
-                            
-                            <div class="flight-brief-grid">
-                                <div class="brief-item"><span>Precio Total</span><strong id="brief-wro-price">340 PLN</strong></div>
-                                <div class="brief-item"><span>Estado de Pago</span><strong id="brief-wro-status" style="color:#f59e0b;">En destino</strong></div>
-                            </div>
-                            <div class="flight-card-footer">Pulsa para detalles o editar</div>
-                        </div>
-                    </div>
-
-                    <!-- POPUP HOTEL CRACOVIA CON TÍTULOS -->
-                    <div id="modal-hotel-krk" class="flight-modal">
-                        <div class="flight-modal-content">
-                            <span class="close-modal-btn" data-modal="modal-hotel-krk">✕</span>
-                            <h3>⚙️ Configurar Alojamiento Cracovia</h3>
-                            <div class="modal-flight-image-placeholder going">🏨</div>
-                            
-                            <div class="expense-form" style="box-shadow:none; padding:0; margin:0;">
-                                <!-- Fila 1: Nombre y Precio -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>🏨 Nombre del Hotel</label>
-                                        <input type="text" id="edit-krk-name" placeholder="Ej: Atlantis Hostel">
-                                    </div>
-                                    <div class="input-group">
-                                        <label>🪙 Precio Total</label>
-                                        <input type="text" id="edit-krk-price" placeholder="Ej: 80 €">
-                                    </div>
-                                </div>
+                        <!-- POPUP HOTEL CRACOVIA CON TÍTULOS -->
+                        <div id="modal-hotel-krk" class="flight-modal">
+                            <div class="flight-modal-content">
+                                <span class="close-modal-btn" data-modal="modal-hotel-krk">✕</span>
+                                <h3>⚙️ Configurar Alojamiento Cracovia</h3>
+                                <div class="modal-flight-image-placeholder going">🏨</div>
                                 
-                                <!-- Fila 2: Dirección -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>📍 Dirección exacta (en polaco)</label>
-                                        <input type="text" id="edit-krk-address" placeholder="Ej: Westerplatte 16, Old Town">
+                                <div class="expense-form">
+                                    <!-- Fila 1: Nombre y Precio -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>🏨 Nombre del Hotel</label>
+                                            <input type="text" id="edit-krk-name" placeholder="Ej: Atlantis Hostel">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>🪙 Precio Total</label>
+                                            <input type="text" id="edit-krk-price" placeholder="Ej: 80 €">
+                                        </div>
                                     </div>
+                                    
+                                    <!-- Fila 2: Dirección -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>📍 Dirección exacta (en polaco)</label>
+                                            <input type="text" id="edit-krk-address" placeholder="Ej: Westerplatte 16, Old Town">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Fila 3: Entrada y Salida -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>🔑 Hora Check-in</label>
+                                            <input type="text" id="edit-krk-checkin" placeholder="Ej: 14:00h">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>🚪 Hora Check-out</label>
+                                            <input type="text" id="edit-krk-checkout" placeholder="Ej: 11:00h">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Fila 4: Estado de Pago -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>📊 Estado del Pago</label>
+                                            <input type="text" id="edit-krk-status" placeholder="Ej: Pagado o En destino">
+                                        </div>
+                                    </div>
+                                    
+                                    <button id="save-hotel-krk-btn" class="submit-expense-btn">💾 Guardar Hotel Cracovia</button>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- POPUP HOTEL BRESLAVIA CON TÍTULOS -->
+                        <div id="modal-hotel-wro" class="flight-modal">
+                            <div class="flight-modal-content">
+                                <span class="close-modal-btn" data-modal="modal-hotel-wro">✕</span>
+                                <h3>⚙️ Configurar Alojamiento Breslavia</h3>
+                                <div class="modal-flight-image-placeholder return">🏨</div>
                                 
-                                <!-- Fila 3: Entrada y Salida -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>🔑 Hora Check-in</label>
-                                        <input type="text" id="edit-krk-checkin" placeholder="Ej: 14:00h">
+                                <div class="expense-form">
+                                    <!-- Fila 1: Nombre y Precio -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>🏨 Nombre del Hotel</label>
+                                            <input type="text" id="edit-wro-name" placeholder="Ej: Korona Hotel">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>🪙 Precio Total</label>
+                                            <input type="text" id="edit-wro-price" placeholder="Ej: 340 PLN">
+                                        </div>
                                     </div>
-                                    <div class="input-group">
-                                        <label>🚪 Hora Check-out</label>
-                                        <input type="text" id="edit-krk-checkout" placeholder="Ej: 11:00h">
+                                    
+                                    <!-- Fila 2: Dirección -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>📍 Dirección exacta (en polaco)</label>
+                                            <input type="text" id="edit-wro-address" placeholder="Ej: Rynek 29, Casco Antiguo">
+                                        </div>
                                     </div>
+                                    
+                                    <!-- Fila 3: Entrada y Salida -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>🔑 Hora Check-in</label>
+                                            <input type="text" id="edit-wro-checkin" placeholder="Ej: 15:00h">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>🚪 Hora Check-out</label>
+                                            <input type="text" id="edit-wro-checkout" placeholder="Ej: 10:00h">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Fila 4: Estado de Pago -->
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>📊 Estado del Pago</label>
+                                            <input type="text" id="edit-wro-status" placeholder="Ej: Pagado o En destino">
+                                        </div>
+                                    </div>
+                                    
+                                    <button id="save-hotel-wro-btn" class="submit-expense-btn">💾 Guardar Hotel Breslavia</button>
                                 </div>
-                                
-                                <!-- Fila 4: Estado de Pago -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>📊 Estado del Pago</label>
-                                        <input type="text" id="edit-krk-status" placeholder="Ej: Pagado o En destino">
-                                    </div>
-                                </div>
-                                
-                                <button id="save-hotel-krk-btn" class="submit-expense-btn">💾 Guardar Hotel Cracovia</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- POPUP HOTEL BRESLAVIA CON TÍTULOS -->
-                    <div id="modal-hotel-wro" class="flight-modal">
-                        <div class="flight-modal-content">
-                            <span class="close-modal-btn" data-modal="modal-hotel-wro">✕</span>
-                            <h3>⚙️ Configurar Alojamiento Breslavia</h3>
-                            <div class="modal-flight-image-placeholder return">🏨</div>
-                            
-                            <div class="expense-form" style="box-shadow:none; padding:0; margin:0;">
-                                <!-- Fila 1: Nombre y Precio -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>🏨 Nombre del Hotel</label>
-                                        <input type="text" id="edit-wro-name" placeholder="Ej: Korona Hotel">
-                                    </div>
-                                    <div class="input-group">
-                                        <label>🪙 Precio Total</label>
-                                        <input type="text" id="edit-wro-price" placeholder="Ej: 340 PLN">
-                                    </div>
-                                </div>
-                                
-                                <!-- Fila 2: Dirección -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>📍 Dirección exacta (en polaco)</label>
-                                        <input type="text" id="edit-wro-address" placeholder="Ej: Rynek 29, Casco Antiguo">
-                                    </div>
-                                </div>
-                                
-                                <!-- Fila 3: Entrada y Salida -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>🔑 Hora Check-in</label>
-                                        <input type="text" id="edit-wro-checkin" placeholder="Ej: 15:00h">
-                                    </div>
-                                    <div class="input-group">
-                                        <label>🚪 Hora Check-out</label>
-                                        <input type="text" id="edit-wro-checkout" placeholder="Ej: 10:00h">
-                                    </div>
-                                </div>
-                                
-                                <!-- Fila 4: Estado de Pago -->
-                                <div class="form-row">
-                                    <div class="input-group">
-                                        <label>📊 Estado del Pago</label>
-                                        <input type="text" id="edit-wro-status" placeholder="Ej: Pagado o En destino">
-                                    </div>
-                                </div>
-                                
-                                <button id="save-hotel-wro-btn" class="submit-expense-btn">💾 Guardar Hotel Breslavia</button>
+                    <!-- SUB-VISTA C: CIUDADES (Estructura de tarjetas verticales por días) -->
+                    <div id="sub-ciudades" class="sub-view">
+                        
+                        <!-- NIVEL 1: Cuadrícula principal de días (Actualizado a 1 columna para apilar hacia abajo) -->
+                        <div id="cities-dashboard" style="display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%;">
+
+                            <!-- Tarjeta 1: Cracovia (Ocupa el 100% del ancho) -->
+                            <div class="city-dash-card" data-target-city="Cracovia" style="pointer-events: auto !important; cursor: pointer; background: var(--card-bg); padding: 1.2rem; border-radius: 16px; border-left: 4px solid #0284c7; display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box;">
+                                <span style="pointer-events: none; font-size: 0.75rem; font-weight: bold; color: #0284c7; opacity: 0.8;">📅 DÍAS 1 y 2</span>
+                                <h3 style="pointer-events: none; margin: 0; font-size: 1.2rem; color: var(--text-color);">Cracovia 🏰</h3>
+                                <p style="pointer-events: none; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.6;">Mercados navideños, Castillo de Wawel y gastronomía.</p>
                             </div>
-                        </div>
-                    </div>
 
-                </div>
-
-                <!-- SUB-VISTA C: CIUDADES (Estructura de tarjetas por días) -->
-                <div id="sub-ciudades" class="sub-view">
-                    
-                    <!-- NIVEL 1: Cuadrícula principal de días (Se muestra al principio) -->
-                    <div id="cities-dashboard" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%;">
-    
-                        <!-- Cuadrado Cracovia con contra-bloqueo CSS en línea -->
-                        <div class="city-dash-card" data-target-city="Cracovia" style="pointer-events: auto !important; cursor: pointer; background: var(--card-bg); padding: 1.2rem; border-radius: 16px; border-left: 4px solid #0284c7; display: flex; flex-direction: column; gap: 6px;">
-                            <span style="pointer-events: none; font-size: 0.75rem; font-weight: bold; color: #0284c7; opacity: 0.8;">📅 DÍAS 1 y 2</span>
-                            <h3 style="pointer-events: none; margin: 0; font-size: 1.2rem; color: var(--text-color);">Cracovia 🏰</h3>
-                            <p style="pointer-events: none; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.6;">Mercados navideños, Castillo de Wawel y gastronomía.</p>
+                            <!-- Tarjeta 2: Breslavia (Se posiciona abajo automáticamente) -->
+                            <div class="city-dash-card" data-target-city="Breslavia" style="pointer-events: auto !important; cursor: pointer; background: var(--card-bg); padding: 1.2rem; border-radius: 16px; border-left: 4px solid #2ed573; display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box;">
+                                <span style="pointer-events: none; font-size: 0.75rem; font-weight: bold; color: #2ed573; opacity: 0.8;">📅 DÍA 3</span>
+                                <h3 style="pointer-events: none; margin: 0; font-size: 1.2rem; color: var(--text-color);">Breslavia 🧝</h3>
+                                <p style="pointer-events: none; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.6;">Ruta de los gnomos de bronce y sótanos históricos.</p>
+                            </div>
+                            
                         </div>
 
-                        <!-- Cuadrado Breslavia con contra-bloqueo CSS en línea -->
-                        <div class="city-dash-card" data-target-city="Breslavia" style="pointer-events: auto !important; cursor: pointer; background: var(--card-bg); padding: 1.2rem; border-radius: 16px; border-left: 4px solid #2ed573; display: flex; flex-direction: column; gap: 6px;">
-                            <span style="pointer-events: none; font-size: 0.75rem; font-weight: bold; color: #2ed573; opacity: 0.8;">📅 DÍA 3</span>
-                            <h3 style="pointer-events: none; margin: 0; font-size: 1.2rem; color: var(--text-color);">Breslavia 🧝</h3>
-                            <p style="pointer-events: none; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.6;">Ruta de los gnomos de bronce y sótanos históricos.</p>
+                        <!-- NIVEL 2: Contenedor interno de información (Oculto al inicio) -->
+                        <div id="city-detail-view" style="display: none; width: 100%;">
+                            <!-- Botón flotante para regresar al menú de cuadrados -->
+                            <button id="back-to-dashboard-btn" style="background: rgba(128,128,128,0.1); border: none; color: var(--text-color); padding: 8px 14px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; cursor: pointer; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 4px;">⬅️ Volver</button>
+                            
+                            <!-- Aquí el JS inyectará dinámicamente todo lo de esa ciudad (Itinerario, Qué ver, Restaurantes) -->
+                            <div class="timeline" id="timeline-container"></div>
                         </div>
                         
                     </div>
 
-                    <!-- NIVEL 2: Contenedor interno de información (Oculto al inicio) -->
-                    <div id="city-detail-view" style="display: none; width: 100%;">
-                        <!-- Botón flotante para regresar al menú de cuadrados -->
-                        <button id="back-to-dashboard-btn" style="background: rgba(128,128,128,0.1); border: none; color: var(--text-color); padding: 8px 14px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; cursor: pointer; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 4px;">⬅️ Volver</button>
-                        
-                        <!-- Aquí el JS inyectará dinámicamente todo lo de esa ciudad (Itinerario, Qué ver, Restaurantes) -->
-                        <div class="timeline" id="timeline-container"></div>
-                    </div>
-                    
+
                 </div>
             </section>
+
+
+
+
+
 
             <!--**********************************************************************************************************************************-->
             <!--                                                PESTAÑA 2 (Mapa)                                                                  -->
@@ -398,11 +440,7 @@
 
                 <!-- Caja del Conversor Interactiva Bidireccional -->
                 <div class="converter-section">
-                    <div class="converter-section-container-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 5.5a4 4 0 0 0-4 4v8.553a4 4 0 0 0 4 4h8.553a4 4 0 0 0 4-4V9.5a4 4 0 0 0-4-4z"/><path d="M11.192 17.174c.507.637 1.115.956 2.027.956h1.216c1.115 0 2.027-.956 2.027-2.124h0c0-1.168-.912-2.124-2.027-2.124h-1.317c-1.115 0-2.027-.955-2.027-2.123h0c0-1.168.912-2.124 2.027-2.124h1.216c.912 0 1.52.213 2.026.956m-2.634 8.495V8.467M9.5 25.947h8.553c2.216 0 4 1.784 4 4V38.5c0 2.216-1.784 4-4 4H9.5c-2.216 0-4-1.784-4-4v-8.553c0-2.216 1.784-4 4-4"/><path d="M17.338 31.68c0-1.606-1.21-2.811-2.823-2.811h0c-1.613 0-2.822 1.205-2.822 2.811v5.087c0 .536-.135 1.205-.538 1.607l-.94 1.205h7.123m-4.032-5.087h-2.957M29.947 5.5H38.5c2.216 0 4 1.784 4 4v8.553c0 2.216-1.784 4-4 4h-8.553c-2.216 0-4-1.784-4-4V9.5c0-2.216 1.784-4 4-4"/><path d="M38.082 17.793c-.677.803-1.624 1.338-2.843 1.338h0c-2.03 0-3.655-1.606-3.655-3.614v-3.481c0-2.008 1.624-3.615 3.655-3.615h0c1.083 0 2.166.536 2.843 1.34m-7.717 2.677h4.062m-4.062 2.543h4.062m-4.48 10.966a4 4 0 0 0-4 4V38.5a4 4 0 0 0 4 4H38.5a4 4 0 0 0 4-4v-8.553a4 4 0 0 0-4-4z"/><path d="m37.711 28.869l-3.487 5.355l-3.488-5.355m3.488 10.71v-5.355m-3.354 0h6.707m-6.707 2.677h6.707"/></g></svg>
-                        <!-- Título independiente en su propia línea superior -->
-                        <h3 class="converter-section-title">Conversor de monedas</h3>
-                    </div>
+                    <h3 class="converter-section-title">Conversor de monedas</h3>
                                     
                     <!-- Caja elástica que se renderiza abajo -->
                     <div class="converter-box">
@@ -463,7 +501,7 @@
                 </div>
 
                 <!-- CONTENEDOR DE GASTOS DESGLOSADOS POR DÍA -->
-                <h3 class="converter-section-title">📋 Historial de Gastos por Día</h3>
+                <h3 class="converter-section-title">Historial de Gastos por Día</h3>
 
                 <!-- Gráfico de Barra por Categorías -->
                 <div class="category-chart-wrapper">
@@ -502,7 +540,7 @@
                 <h2>Maleta</h2>
                 
                 <!-- Formulario rápido con selector de categorías -->
-                <div class="expense-form" style="margin-bottom: 1.5rem;">
+                <div class="expense-form">
                     <h3>➕ Añadir Objeto a la Maleta</h3>
                     <div class="form-row">
                         <input type="text" id="new-pack-item" placeholder="Ej: Llevar paraguas pequeño...">
@@ -515,7 +553,7 @@
                             <option value="💊 Aseo y Botiquín">💊 Aseo y Botiquín</option>
                             <option value="📦 Otros">📦 Otros</option>
                         </select>
-                        <button id="add-pack-item-btn" class="submit-expense-btn" style="flex: 1; margin-top: 0; padding: 0.6rem;">Añadir</button>
+                        <button id="add-pack-item-btn" class="submit-expense-btn">Añadir</button>
                     </div>
                 </div>
 
@@ -525,8 +563,9 @@
 
         </main>
 
-        <!-- NAVEGACIÓN INFERIOR (Estilo App Móvil) -->
-            <!-- NAVEGACIÓN INFERIOR (Estilo App Móvil) -->
+        <!--**********************************************************************************************************************************
+                                                    NAVBAR INFERIOR (Estilo App Móvil)
+        ***********************************************************************************************************************************-->
         <nav class="bottom-nav">
             <!-- Icono 1: Calendario / Ruta -->
             <button class="nav-btn active" data-target="tab-itinerary">
@@ -546,7 +585,7 @@
                 <span>Dinero</span>
             </button>
 
-            <!-- Icono 4: Documentos / Maleta -->
+            <!-- Icono 4: Maleta -->
             <button class="nav-btn" data-target="tab-docs">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16"><g fill="currentColor"><path d="M6 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 6 5m2 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m2 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 10 5"/><path d="M6.5 0a.5.5 0 0 0-.5.5V3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 1.031 1.75A1.003 1.003 0 0 0 5 16a1 1 0 0 0 1-1h4a1 1 0 1 0 1.969-.25A2 2 0 0 0 13 13V5a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-.5-.5zM9 3H7V1h2zm3 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/></g></svg>
                 <span>Maleta</span>

@@ -1,0 +1,133 @@
+/*******************************************************************************
+ PESTAÑA DE EQUIPAJE (Checklist Interactiva y Categorías)
+ *******************************************************************************/
+
+/* Ajustes estructurales y márgenes del formulario de la maleta */
+.luggage-form-margin {
+    margin-bottom: 1.5rem;
+}
+
+.luggage-submit-btn {
+    flex: 1; 
+    margin-top: 0; 
+    padding: 0.6rem;
+}
+
+/* Caja superior del buscador/formulario de inserción */
+.add-item-box input {
+    flex: 1;
+    padding: 0.7rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.add-item-box button {
+    background-color: #0284c7; 
+    color: white;
+    border: none;
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/*******************************************************************************
+ PESTAÑA DE EQUIPAJE: BLOQUES CLASIFICADOS DE CONTENIDO
+ *******************************************************************************/
+.pack-category-block {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.pack-category-title {
+    margin: 0 0 0.8rem 0;
+    font-size: 0.95rem;
+    font-weight: bold;
+    opacity: 0.85;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 4px;
+}
+
+.pack-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/*******************************************************************************
+ PESTAÑA DE EQUIPAJE: FILAS DE ELEMENTOS (ITEMS) E INTERACCIÓN
+ *******************************************************************************/
+.check-item-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    background: var(--bg-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    border-left: 3px solid var(--primary-color);
+}
+
+.check-item-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.check-item-left input[type="checkbox"] {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.delete-pack-btn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 4px;
+}
+
+/*******************************************************************************
+ PESTAÑA DE EQUIPAJE: ESTADOS CLASES DINÁMICAS (INYECTADAS POR JS)
+ *******************************************************************************/
+.check-item-label.completed {
+    opacity: 0.4; 
+    background-color: rgba(0,0,0,0.01);
+}
+
+.check-item-label.completed .check-item-left span {
+    text-decoration: line-through; 
+}
+
+/*******************************************************************************
+ PESTAÑA DE EQUIPAJE: CORRECCIÓN DE ANCHOS EN EL FORMULARIO
+ *******************************************************************************/
+/* Forzamos al selector a ocupar exactamente la mitad del contenedor */
+#new-pack-cat {
+    flex: 1 !important;
+    width: 50% !important;
+    max-width: 50% !important;
+}
+
+/* Forzamos al botón Añadir a alinearse en paralelo ocupando la otra mitad exacta */
+#add-pack-item-btn {
+    flex: 1 !important;
+    width: 50% !important;
+    max-width: 50% !important;
+    margin-top: 0 !important;
+    padding: 0.6rem !important;
+}
