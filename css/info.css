@@ -336,6 +336,13 @@
     color: var(--text-color);
 }
 
+/*******************************************************************************
+ DISEÑO DE TARJETAS DE HOTELES
+*******************************************************************************/
+.hotel-card-badge-row{
+    display: flex;
+    justify-content: space-between;
+}
 
 /********************************************************************************
    ESTILOS PARA LAS VENTANAS EMERGENTES (POPUP MODALS)
@@ -389,6 +396,9 @@
 }
 .flight-modal.open .flight-modal-content {
     transform: translateY(0) scale(1);
+}
+.flight-modal-content h3{
+    text-align: center;
 }
 /* Botón de la cruz superior derecha de cierre */
 .close-modal-btn {
