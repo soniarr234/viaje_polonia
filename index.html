@@ -193,12 +193,12 @@
                                     <div class="flight-card-badge checkout">🚪 CHECK-OUT: <span id="brief-krk-checkout">11:00h</span></div>
                                 </div>
 
-                                <h3 id="brief-krk-name" style="opacity:1; font-size:1.1rem; margin: 4px 0;">Atlantis Hostel</h3>
-                                <p id="brief-krk-address" style="margin:0 0 8px 0; font-size:0.85rem; opacity:0.7;">Westerplatte 16, Old Town</p>
+                                <h3 id="brief-krk-name">Atlantis Hostel</h3>
+                                <p id="brief-krk-address">Westerplatte 16, Old Town</p>
                                 
                                 <div class="flight-brief-grid">
                                     <div class="brief-item"><span>Precio Total</span><strong id="brief-krk-price">80 €</strong></div>
-                                    <div class="brief-item"><span>Estado de Pago</span><strong id="brief-krk-status" style="color:#2ed573;">Pagado</strong></div>
+                                    <div class="brief-item"><span>Estado de Pago</span><strong id="brief-krk-status">Pagado</strong></div>
                                 </div>
                                 <div class="flight-card-footer">Pulsa para detalles o editar</div>
                             </div>
@@ -214,12 +214,12 @@
                                     <div class="flight-card-badge checkout">🚪 CHECK-OUT: <span id="brief-wro-checkout">10:00h</span></div>
                                 </div>
 
-                                <h3 id="brief-wro-name" style="opacity:1; font-size:1.1rem; margin: 4px 0;">Korona Hotel</h3>
-                                <p id="brief-wro-address" style="margin:0 0 8px 0; font-size:0.85rem; opacity:0.7;">Rynek 29, Casco Antiguo</p>
+                                <h3 id="brief-wro-name">Korona Hotel</h3>
+                                <p id="brief-wro-address">Rynek 29, Casco Antiguo</p>
                                 
                                 <div class="flight-brief-grid">
                                     <div class="brief-item"><span>Precio Total</span><strong id="brief-wro-price">340 PLN</strong></div>
-                                    <div class="brief-item"><span>Estado de Pago</span><strong id="brief-wro-status" style="color:#f59e0b;">En destino</strong></div>
+                                    <div class="brief-item"><span>Estado de Pago</span><strong id="brief-wro-status">En destino</strong></div>
                                 </div>
                                 <div class="flight-card-footer">Pulsa para detalles o editar</div>
                             </div>
@@ -336,28 +336,26 @@
                     <div id="sub-ciudades" class="sub-view">
                         
                         <!-- NIVEL 1: Cuadrícula principal de días (Actualizado a 1 columna para apilar hacia abajo) -->
-                        <div id="cities-dashboard" style="display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%;">
+                        <div id="cities-dashboard">
 
                             <!-- Tarjeta 1: Cracovia (Ocupa el 100% del ancho) -->
-                            <div class="city-dash-card" data-target-city="Cracovia" style="pointer-events: auto !important; cursor: pointer; background: var(--card-bg); padding: 1.2rem; border-radius: 16px; border-left: 4px solid #0284c7; display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box;">
-                                <span style="pointer-events: none; font-size: 0.75rem; font-weight: bold; color: #0284c7; opacity: 0.8;">📅 DÍAS 1 y 2</span>
-                                <h3 style="pointer-events: none; margin: 0; font-size: 1.2rem; color: var(--text-color);">Cracovia 🏰</h3>
-                                <p style="pointer-events: none; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.6;">Mercados navideños, Castillo de Wawel y gastronomía.</p>
+                            <div class="city-dash-card city-cracovia" data-target-city="Cracovia">
+                                <span>📅 DÍAS 1 y 2</span>
+                                <h3 >Cracovia</h3>
                             </div>
 
                             <!-- Tarjeta 2: Breslavia (Se posiciona abajo automáticamente) -->
-                            <div class="city-dash-card" data-target-city="Breslavia" style="pointer-events: auto !important; cursor: pointer; background: var(--card-bg); padding: 1.2rem; border-radius: 16px; border-left: 4px solid #2ed573; display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box;">
-                                <span style="pointer-events: none; font-size: 0.75rem; font-weight: bold; color: #2ed573; opacity: 0.8;">📅 DÍA 3</span>
-                                <h3 style="pointer-events: none; margin: 0; font-size: 1.2rem; color: var(--text-color);">Breslavia 🧝</h3>
-                                <p style="pointer-events: none; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.6;">Ruta de los gnomos de bronce y sótanos históricos.</p>
+                            <div class="city-dash-card city-breslavia" data-target-city="Breslavia">
+                                <span>📅 DÍA 3</span>
+                                <h3>Breslavia</h3>
                             </div>
                             
                         </div>
 
                         <!-- NIVEL 2: Contenedor interno de información (Oculto al inicio) -->
-                        <div id="city-detail-view" style="display: none; width: 100%;">
+                        <div id="city-detail-view">
                             <!-- Botón flotante para regresar al menú de cuadrados -->
-                            <button id="back-to-dashboard-btn" style="background: rgba(128,128,128,0.1); border: none; color: var(--text-color); padding: 8px 14px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; cursor: pointer; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 4px;">⬅️ Volver</button>
+                            <button id="back-to-dashboard-btn">⬅️ Volver</button>
                             
                             <!-- Aquí el JS inyectará dinámicamente todo lo de esa ciudad (Itinerario, Qué ver, Restaurantes) -->
                             <div class="timeline" id="timeline-container"></div>

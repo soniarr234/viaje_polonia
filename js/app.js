@@ -396,10 +396,10 @@ function renderItinerario() {
         const datosExtra = infoCiudades[ciudadSeleccionada] || { lugares: [], restaurantes: [] };
 
         const itinerarioHTML = diasFiltrados.map(item => `
-            <div class="timeline-item" style="margin-bottom: 1.5rem; padding: 1rem; border-left: 3px solid var(--primary-color, #ffa502); background: rgba(0,0,0,0.02); border-radius: 0 8px 8px 0;">
+            <div class="timeline-item">
                 <div style="font-weight: bold; color: var(--primary-color, #ffa502); font-size: 0.9rem;">Día ${item.dia} - ${item.fecha}</div>
-                <h3 style="margin: 0.2rem 0; color: var(--text-color);">${item.ciudad}</h3>
-                <p style="margin: 0; font-size: 0.95rem; opacity: 0.8; color: var(--text-color);">${item.actividad}</p>
+                <h3>${item.ciudad}</h3>
+                <p">${item.actividad}</p>
             </div>
         `).join('');
 
@@ -417,15 +417,15 @@ function renderItinerario() {
         `).join('');
 
         const localesHTML = datosExtra.restaurantes.map(rest => `
-            <div style="background: rgba(0, 0, 0, 0.02); border-left: 4px solid #2ed573; padding: 12px; border-radius: 8px; margin-bottom: 10px; color: var(--text-color);">
-                <h4 style="margin: 0 0 4px 0; color: inherit; font-size: 0.95rem;">${rest.nombre}</h4>
-                <p style="margin: 0; font-size: 0.85rem; opacity: 0.8; line-height: 1.3;">${rest.desc}</p>
+            <div class="food-card"
+                <h4>${rest.nombre}</h4>
+                <p>${rest.desc}</p>
             </div>
         `).join('');
 
         container.innerHTML = `
             <h2 style="margin: 0 0 1.5rem 0; color: var(--text-color); font-size: 1.4rem;">📍 Explorando ${ciudadSeleccionada}</h2>
-            <h4 style="margin: 0 0 1rem 0; opacity: 0.5; font-size: 0.75rem; letter-spacing: 1px; color: var(--text-color);">📅 PLAN DE ITINERARIO</h4>
+            <div class="section-label">📅 PLAN DE ITINERARIO</div>
             ${itinerarioHTML}
             
             <h4 style="margin: 1.8rem 0 1rem 0; opacity: 0.5; font-size: 0.75rem; letter-spacing: 1px; color: var(--text-color);">🗺️ MONUMENTOS E IMPRESCINDIBLES</h4>
@@ -437,6 +437,13 @@ function renderItinerario() {
 
         dashboard.style.display = "none";
         detailView.style.display = "block";
+
+        requestAnimationFrame(() => {
+            detailView.classList.add("active");
+        });
+
+        detailView.scrollTop = 0;
+
     }
 
     // =========================================================================
@@ -456,9 +463,14 @@ function renderItinerario() {
             // 2. Manejo del clic en el botón de regresar "Volver"
             const backBtn = e.target.closest('#back-to-dashboard-btn');
             if (backBtn) {
-                detailView.style.display = "none";
-                dashboard.style.display = "grid";
-                container.innerHTML = "";
+                detailView.classList.remove("active");
+
+                setTimeout(() => {
+                    detailView.style.display = "none";
+                    dashboard.style.display = "grid";
+                    container.innerHTML = "";
+                }, 300);
+
                 return;
             }
 

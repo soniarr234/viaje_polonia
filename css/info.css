@@ -344,6 +344,192 @@
     justify-content: space-between;
 }
 
+
+
+/*******************************************************************************
+ DISEÑO DE TARJETAS DE CIUDADES (VERSIÓN APP PRO)
+*******************************************************************************/
+#cities-dashboard{
+    gap: 20px;
+}
+
+.city-dash-card {
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 20px;
+    padding: 1.4rem;
+    margin-bottom: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+
+    /* 🎨 fondo con degradado más “app” */
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #ffffff;
+
+    /* 💡 efecto glass suave */
+    border: 1px solid rgba(255,255,255,0.08);
+
+    /* 🔥 profundidad real */
+    box-shadow: 
+        0 8px 20px rgba(0,0,0,0.15),
+        0 2px 6px rgba(0,0,0,0.1);
+
+    transition: 
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* ✨ overlay luz suave */
+.city-dash-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(255,255,255,0.12), transparent 60%);
+    pointer-events: none;
+}
+
+/* 👉 al pulsar */
+.city-dash-card:active {
+    transform: scale(0.96);
+    box-shadow: 
+        0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* 👉 hover solo para escritorio */
+@media (hover: hover) {
+    .city-dash-card:hover {
+        transform: translateY(-4px);
+    }
+}
+
+/* TEXTO DE FECHA */
+.city-dash-card span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    color: #38bdf8; /* azul brillante */
+
+    opacity: 0.9;
+}
+
+/* TÍTULO */
+.city-dash-card h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+
+    color: #ffffff; /* 🔥 importante cambio */
+}
+
+/* -------------------------------------------------- */
+/* DETALLE CIUDAD (ANIMACIÓN APP REAL) */
+/* -------------------------------------------------- */
+
+#city-detail-view {
+    display: none;
+    width: 100%;
+
+    transform: translateY(30px);
+    opacity: 0;
+
+    transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#city-detail-view.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* -------------------------------------------------- */
+/* BOTÓN VOLVER ESTILO APP */
+/* -------------------------------------------------- */
+
+#back-to-dashboard-btn {
+    background: rgba(2, 132, 199, 0.12);
+    border: none;
+    color: #0284c7;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+
+    transition: transform 0.15s ease;
+}
+
+#back-to-dashboard-btn:active {
+    transform: scale(0.9);
+}
+
+
+.timeline-item {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1rem;
+    margin-bottom: 14px;
+
+    border-left: 4px solid #0284c7;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.timeline-item h3 {
+    margin: 4px 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.timeline-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.section-label {
+    margin: 18px 0 10px 0;
+    font-size: 0.7rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+.food-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+
+    border-left: 4px solid #22c55e;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.food-card h4 {
+    margin: 0 0 4px 0;
+    font-size: 0.9rem;
+}
+
+.food-card p {
+    margin: 0;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+
 /********************************************************************************
    ESTILOS PARA LAS VENTANAS EMERGENTES (POPUP MODALS)
  ********************************************************************************/
