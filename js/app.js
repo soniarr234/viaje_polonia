@@ -1054,110 +1054,35 @@ function initCountdown() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const magazineHero = document.querySelector(".magazine-hero");
-    const magicContent = document.getElementById("magic-scroll-content");
-    const tabItinerary = document.getElementById("tab-itinerary");
-    const appHeader = document.querySelector(".app-header"); // Buscamos tu nueva cabecera
 
-    if (magazineHero && magicContent && tabItinerary && appHeader) {
+    const hero = document.querySelector(".magazine-hero");
+    const sheet = document.getElementById("magic-scroll-content");
 
-        function activarItinerario() {
-            if (magicContent.classList.contains("fade-in-visible")) return; // ✅ evitar doble trigger
+    let startY = 0;
 
-            magazineHero.style.opacity = "0";
-            magazineHero.style.visibility = "hidden";
-            magazineHero.style.transform = "scale(0.95)";
+    window.addEventListener("touchstart", (e) => {
+        startY = e.touches[0].clientY;
+    }, { passive: true });
 
-            magicContent.classList.add("fade-in-visible");
+    window.addEventListener("touchend", (e) => {
+        const endY = e.changedTouches[0].clientY;
 
-            appHeader.classList.add("show-header");
+        if (startY - endY > 50) abrirSheet();
 
-            tabItinerary.style.overflow = "auto";
-
-            requestAnimationFrame(() => {
-                window.scrollTo(0, 0);
-            });
+        if (endY - startY > 80 && sheet.classList.contains("sheet-open")) {
+            cerrarSheet();
         }
+    });
 
-        function desactivarItinerario() {
-            magazineHero.style.opacity = "1";
-            magazineHero.style.visibility = "visible";
-            magazineHero.style.transform = "scale(1)";
-
-            magicContent.classList.remove("fade-in-visible");
-
-            appHeader.classList.remove("show-header");
-
-            window.scrollTo(0, 0);
-
-            tabItinerary.style.overflow = "hidden";
-        }
-
-        window.addEventListener("scroll", () => {
-            if (!tabItinerary.classList.contains("active")) return;
-
-            // ✅ SOLO si estamos en modo portada
-            if (window.scrollY > 30 && !magicContent.classList.contains("fade-in-visible")) {
-                activarItinerario();
-            }
-        });
-
-        let touchStartY = 0;
-        let pullDistance = 0;
-        let isPulling = false;
-        const PULL_THRESHOLD = 80;
-
-        window.addEventListener("touchstart", (event) => {
-            if (!tabItinerary.classList.contains("active")) return;
-
-            touchStartY = event.touches[0].clientY;
-            pullDistance = 0;
-            isPulling = window.scrollY <= 0 && magicContent.classList.contains("fade-in-visible");
-
-        }, { passive: true });
-
-
-        window.addEventListener("touchmove", (event) => {
-
-            if (!tabItinerary.classList.contains("active")) return;
-
-            const currentY = event.touches[0].clientY;
-            pullDistance = currentY - touchStartY;
-
-            const enPortada = !magicContent.classList.contains("fade-in-visible");
-
-            // ✅ SOLO bloquear si realmente estás haciendo PULL hacia abajo en top
-            if (enPortada && window.scrollY <= 0 && pullDistance > 0) {
-                event.preventDefault();
-                isPulling = true;
-            }
-
-            if (!isPulling) return;
-
-            if (pullDistance > 0) {
-                const resistance = pullDistance * 0.4;
-
-                magazineHero.style.transform = `scale(${1 + resistance / 1000})`;
-                magazineHero.style.opacity = `${Math.min(1, 0.5 + resistance / 150)}`;
-            }
-
-        }, { passive: false });
-
-                
-        window.addEventListener("touchend", () => {
-            if (!tabItinerary.classList.contains("active")) return;
-            if (!isPulling) return;
-
-            if (pullDistance > PULL_THRESHOLD) {
-                desactivarItinerario();
-            } else {
-                magazineHero.style.transition = "transform 0.3s ease, opacity 0.3s ease";
-                magazineHero.style.transform = "scale(1)";
-                magazineHero.style.opacity = "0";
-            }
-
-            isPulling = false;
-        });
+    function abrirSheet() {
+        sheet.classList.add("sheet-open");
+        hero.classList.add("hero-blur");
     }
-});
 
+    function cerrarSheet() {
+        sheet.classList.remove("sheet-open");
+        hero.classList.remove("hero-blur");
+    }
+
+    hero.addEventListener("click", abrirSheet);
+});
