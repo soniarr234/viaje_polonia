@@ -1088,11 +1088,23 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+let deferredPrompt;
 
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/sw.js")
-            .then(() => console.log("SW registrado ✅"))
-            .catch(err => console.log("Error SW ❌", err));
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    console.log("Instalable ✅");
+
+    // puedes mostrar un botón personalizado aquí
+});
+
+function instalarApp() {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+
+    deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
     });
 }
