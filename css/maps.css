@@ -27,3 +27,6 @@
 .map-wrapper.active iframe {
     pointer-events: auto;
 }
+.map-wrapper iframe {
+    pointer-events: none;
+}

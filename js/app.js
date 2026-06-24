@@ -102,7 +102,17 @@ function initNavigation() {
                     view.classList.remove('active');
                 }
             });
-            
+
+            const mapWrapper = document.querySelector('.map-wrapper');
+
+            if (mapWrapper) {
+                if (target === 'tab-map') {
+                    mapWrapper.classList.add('active');
+                } else {
+                    mapWrapper.classList.remove('active');
+                }
+            }
+
             window.scrollTo(0, 0);
         });
     });
@@ -397,41 +407,41 @@ function renderItinerario() {
 
         const itinerarioHTML = diasFiltrados.map(item => `
             <div class="timeline-item">
-                <div style="font-weight: bold; color: var(--primary-color, #ffa502); font-size: 0.9rem;">Día ${item.dia} - ${item.fecha}</div>
+                <div>Día ${item.dia} - ${item.fecha}</div>
                 <h3>${item.ciudad}</h3>
                 <p">${item.actividad}</p>
             </div>
         `).join('');
 
         const lugaresHTML = datosExtra.lugares.map(lugar => `
-            <div class="accordion-item" style="background: var(--card-bg, rgba(255, 255, 255, 0.04)); border-radius: 12px; margin-bottom: 0.8rem; overflow: hidden; border: 1px solid rgba(128, 128, 128, 0.15);">
-                <button class="accordion-header" style="width: 100%; background: none; border: none; padding: 1rem; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left;">
+            <div class="accordion-item">
+                <button class="accordion-header">
                     <span>${lugar.titulo}</span>
-                    <span class="icon" style="transition: transform 0.3s; font-size: 0.8rem;">▼</span>
+                    <span class="icon">▼</span>
                 </button>
-                <div class="accordion-content" style="max-height: 0; overflow: hidden; padding: 0 1rem; transition: all 0.3s ease; font-size: 0.9rem; line-height: 1.4; opacity: 0.9; color: var(--text-color);">
-                    <p style="margin: 8px 0;">📜 <strong>Historia:</strong> ${lugar.historia}</p>
-                    <p style="margin: 0 0 8px 0; color: #0284c7;">💡 <strong>Tip Pro:</strong> ${lugar.tip}</p>
+                <div class="accordion-content">
+                    <p>📜 <strong>Historia:</strong> ${lugar.historia}</p>
+                    <p>💡 <strong>Tip Pro:</strong> ${lugar.tip}</p>
                 </div>
             </div>
         `).join('');
 
         const localesHTML = datosExtra.restaurantes.map(rest => `
-            <div class="food-card"
+            <div class="food-card">
                 <h4>${rest.nombre}</h4>
                 <p>${rest.desc}</p>
             </div>
         `).join('');
 
         container.innerHTML = `
-            <h2 style="margin: 0 0 1.5rem 0; color: var(--text-color); font-size: 1.4rem;">📍 Explorando ${ciudadSeleccionada}</h2>
+            <h2>Explorando ${ciudadSeleccionada}</h2>
             <div class="section-label">📅 PLAN DE ITINERARIO</div>
             ${itinerarioHTML}
             
-            <h4 style="margin: 1.8rem 0 1rem 0; opacity: 0.5; font-size: 0.75rem; letter-spacing: 1px; color: var(--text-color);">🗺️ MONUMENTOS E IMPRESCINDIBLES</h4>
+            <h4>🗺️ MONUMENTOS E IMPRESCINDIBLES</h4>
             <div class="places-accordion-wrapper">${lugaresHTML}</div>
             
-            <h4 style="margin: 1.8rem 0 1rem 0; opacity: 0.5; font-size: 0.75rem; letter-spacing: 1px; color: var(--text-color);">🍲 DÓNDE COMER Y BEBER</h4>
+            <h4>🍲 DÓNDE COMER Y BEBER</h4>
             <div>${localesHTML}</div>
         `;
 
@@ -874,7 +884,7 @@ function initConversor() {
             // Opcional: Reiniciar al chip por defecto de comida tras guardar
             chips.forEach(c => c.classList.remove('active'));
             if(chips[0]) chips[0].classList.add('active');
-            categoriaSeleccionada = "🍔 Comida";
+            filtroCategoria = "ALL";
 
             actualizarPantallaFinanzas();
         });
